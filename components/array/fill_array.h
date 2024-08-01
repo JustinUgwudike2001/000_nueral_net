@@ -80,28 +80,3 @@ Array Array::lin(){
 
     return *this;
 }
-    Shape s;
-    switch(rank){
-        case 1:
-            s = Shape({shape[0]}, 1);
-            break;
-        case 2:
-            s = Shape({shape[0], shape[1]}, 2);
-            break;
-        case 3:
-            s = Shape({shape[0], shape[1], shape[2]}, 3);
-            break;
-        case 4:
-            s = Shape({shape[0], shape[1], shape[2], shape[3]}, 4);
-            break;
-        default:
-            std::cout<<"Invalid shape"<<std::endl;
-            exit(0);
-            break;
-    }
-    
-    Array arr(s);
-    arr.lin();
-
-    return arr;
-}
