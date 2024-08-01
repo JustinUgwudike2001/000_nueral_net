@@ -56,7 +56,7 @@ Shape::Shape(std::vector<int> _dims, int _num_dims){
 Shape::Shape(int _dims[], int _num_dims){
     if(_num_dims > 4){
         std::cout<<"This shape is not supported"<<std::endl;
-        return;
+        exit(0);
     }
 
     this->num_dims = _num_dims;
@@ -124,4 +124,28 @@ void Shape::print(){
     }
 
     std::cout<<"), size: "<<this->size_flat<<std::endl;
+}
+
+int test_shape(){
+
+    std::vector<int> dims = {2, 4};
+    Shape s1(dims, 2);
+    s1.print();
+
+    Shape s2({10, 8}, 2);
+    s2.print();
+
+    Shape s3({2, 3, 4}, 3);
+    s3.print();
+
+    Shape s4({2, 3, 4, 5}, 4);
+    s4.print();
+
+    s4 = s1;
+    s4.print();
+
+    Shape s5({2, 3, 4, 5, 6}, 5);
+
+
+    return 0;
 }

@@ -371,4 +371,6 @@ int test_broadcast_to(){
     result.print();
     std::cout<<std::endl;
 
+    return 0;
+
 }
