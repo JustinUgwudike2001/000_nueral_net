@@ -31,7 +31,6 @@ Array Array::expand(int dim1, int dim2){
 
     return result;
 }
-
 Array Array::expand(int dim1, int dim2, int dim3){
     if(this->rank != 3){
         printf("Cannot use Array3 expand method for Array%d.", this->rank);
@@ -75,7 +74,6 @@ Array Array::expand(int dim1, int dim2, int dim3){
 
     return result;
 }
-
 Array Array::expand(int dim1, int dim2, int dim3, int dim4){
     if(this->rank != 4){
         printf("Cannot use Array4 expand method for Array%d.", this->rank);
