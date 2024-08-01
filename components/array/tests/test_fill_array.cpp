@@ -6,6 +6,8 @@ int main()
     float arr[16] = {3.,5.,3.,4.,7.,6.,7.,8.,9.,10.,11.,12.,21.,30.,15.,16};
     std::vector<float> vec(32, 5.);
 
+    Array empty;
+
     Array array1(16);
     array1.fill_arr(arr, 16);
 

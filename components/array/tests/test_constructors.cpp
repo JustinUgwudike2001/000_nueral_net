@@ -8,7 +8,7 @@ int main()
     std::cout<<"array1 shape: "
         <<array1.get_shape().shape()[0]<<", "
         <<array1.get_shape().shape()[1]
-        <<std::endl;
+        <<std::endl;      
         
     Array array2(10, 10);
     std::cout<<"array2 shape: "

@@ -68,13 +68,9 @@ class Array {
         void fill_grad_vec(std::vector<float> _data, std::vector<float> _dots, int size);
 
         Array ones();
-        Array ones(int shape[], int rank);
         Array random();
-        Array random(int shape[], int rank);
         Array zeros();
-        Array zeros(int shape[], int rank);
         Array lin();
-        Array lin(int shape[], int rank);
 
         void print_grad();
         void print();
