@@ -128,3 +128,13 @@ Array Array::expand(int dim1, int dim2, int dim3, int dim4){
 
     return result;
 }
+
+Array Array::broadcast_to(int dim1, int dim2){
+    return *this;
+}
+Array Array::broadcast_to(int dim1, int dim2, int dim3){
+    return *this;
+}
+Array Array::broadcast_to(int dim1, int dim2, int dim3, int dim4){
+    return *this;
+}
