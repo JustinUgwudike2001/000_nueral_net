@@ -48,27 +48,141 @@ void Array::fill_grad_vec(std::vector<float> _data, std::vector<float> _dots, in
 }
 
 
-void Array::ones(){
+Array Array::ones(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = 1.;
         dots[i] = 1.;
     }
+
+    return *this;
 }
-void Array::random(){
+Array Array::random(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = float((std::rand() % 1000) + 1)/1000;
         dots[i] = 1.;
     }
+
+    return *this;
 }
-void Array::zeros(){
+Array Array::zeros(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = 0.;
         dots[i] = 1.;
     }
+
+    return *this;
 }
-void Array::lin(){
+Array Array::lin(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = float(i);
         dots[i] = 1.;
     }
+
+    return *this;
+}
+
+Array Array::ones(int shape[], int rank){
+    Shape s;
+    switch(rank){
+        case 1:
+            s = Shape({shape[0]}, 1);
+            break;
+        case 2:
+            s = Shape({shape[0], shape[1]}, 2);
+            break;
+        case 3:
+            s = Shape({shape[0], shape[1], shape[2]}, 3);
+            break;
+        case 4:
+            s = Shape({shape[0], shape[1], shape[2], shape[3]}, 4);
+            break;
+        default:
+            std::cout<<"Invalid shape"<<std::endl;
+            exit(0);
+            break;
+    }
+    
+    Array arr(s);
+    arr.ones();
+
+    return arr;
+
+}
+Array Array::random(int shape[], int rank){
+    Shape s;
+    switch(rank){
+        case 1:
+            s = Shape({shape[0]}, 1);
+            break;
+        case 2:
+            s = Shape({shape[0], shape[1]}, 2);
+            break;
+        case 3:
+            s = Shape({shape[0], shape[1], shape[2]}, 3);
+            break;
+        case 4:
+            s = Shape({shape[0], shape[1], shape[2], shape[3]}, 4);
+            break;
+        default:
+            std::cout<<"Invalid shape"<<std::endl;
+            exit(0);
+            break;
+    }
+    
+    Array arr(s);
+    arr.random();
+
+    return arr;
+}
+Array Array::zeros(int shape[], int rank){
+    Shape s;
+    switch(rank){
+        case 1:
+            s = Shape({shape[0]}, 1);
+            break;
+        case 2:
+            s = Shape({shape[0], shape[1]}, 2);
+            break;
+        case 3:
+            s = Shape({shape[0], shape[1], shape[2]}, 3);
+            break;
+        case 4:
+            s = Shape({shape[0], shape[1], shape[2], shape[3]}, 4);
+            break;
+        default:
+            std::cout<<"Invalid shape"<<std::endl;
+            exit(0);
+            break;
+    }
+    
+    Array arr(s);
+    arr.zeros();
+
+    return arr;
+}
+Array Array::lin(int shape[], int rank){
+    Shape s;
+    switch(rank){
+        case 1:
+            s = Shape({shape[0]}, 1);
+            break;
+        case 2:
+            s = Shape({shape[0], shape[1]}, 2);
+            break;
+        case 3:
+            s = Shape({shape[0], shape[1], shape[2]}, 3);
+            break;
+        case 4:
+            s = Shape({shape[0], shape[1], shape[2], shape[3]}, 4);
+            break;
+        default:
+            std::cout<<"Invalid shape"<<std::endl;
+            exit(0);
+            break;
+    }
+    
+    Array arr(s);
+    arr.lin();
+
+    return arr;
 }
