@@ -79,7 +79,7 @@ class Array {
         static Array zeros(std::initializer_list<int> dims);
         Array lin();
         static Array lin(std::initializer_list<int> dims);
-
+        static Array from_array(std::initializer_list<int> dims, std::initializer_list<D> array);
 
         void print_grad();
         void print();

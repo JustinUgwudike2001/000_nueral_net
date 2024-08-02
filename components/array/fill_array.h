@@ -149,11 +149,29 @@ inline Array<D> Array<D>::random(std::initializer_list<int> dims){
 template <typename D>
 inline Array<D> Array<D>::lin(std::initializer_list<int> dims){
     Array<D> arr(dims);
-    arr.in();
+    arr.lin();
     return arr;
 }
 
 
+template <typename D>
+inline Array<D> Array<D>::from_array(std::initializer_list<int> dims, std::initializer_list<D> array){
+    std::vector<D> data(array);
+    std::vector<D> flat_data;
+    Array<D> arr(dims);
+
+    if (arr.shape.size() != array.size()){
+        printf("The size: %d of the array does not match the size of the array: %d.", arr.shape.size(), array.size());
+        exit(0);
+    }
+
+    // for (const auto& subVector : data) {
+    //     flat_data.insert(flat_data.end(), subVector.begin(), subVector.end());
+    // }
+
+    arr.fill_vec(data, arr.shape.size());
+    return arr;
+}
 
 int test_fill_array(){
 
@@ -225,6 +243,12 @@ int test_fill_array_static(){
 
     Array<float> arr7 = Array<float>::random({1, 2, 3, 4});
     arr7.print();
+
+    Array<int> arr8 = Array<int>::from_array({2, 4}, {1, 2, 3, 4, 4, 4, 4, 5});
+    arr8.print();
+
+    Array<float> arr9 = Array<float>::from_array({1, 8}, {1., 2., 3., 4., 4., 4., 4., 5.});
+    arr9.print();
 
     return 0;
 
