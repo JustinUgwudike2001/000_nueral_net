@@ -10,10 +10,7 @@ class Array {
 
         Array();
         Array(Shape shape);
-        Array(std::initializer_list<int> dims); //Array1;
-        // Array(int _shape_0, int _shape_1); //Array2
-        // Array(int _shape_0, int _shape_1, int _shape_2); //Array3
-        // Array(int _shape_0, int _shape_1, int _shape_2, int _shape_3); //Array4
+        Array(std::initializer_list<int> dims);
 
         //basic ops
         Array operator=(const Array& arr2);
@@ -61,12 +58,13 @@ class Array {
         void fill_grad_vec(std::vector<D> _data, std::vector<float> _dots, int size);
 
         Array ones();
-        static Array ones(std::initializer_list<int> dims);
         Array random();
-        static Array random(std::initializer_list<int> dims);
         Array zeros();
-        static Array zeros(std::initializer_list<int> dims);
         Array lin();
+
+        static Array zeros(std::initializer_list<int> dims);
+        static Array random(std::initializer_list<int> dims);
+        static Array ones(std::initializer_list<int> dims);
         static Array lin(std::initializer_list<int> dims);
         static Array from_array(std::initializer_list<int> dims, std::initializer_list<D> array);
 
@@ -92,8 +90,6 @@ class Array {
 
         std::vector<D> data;
         std::vector<float> dots;
-
-        Array create_arr();
 
         void print_arr2();
         void print_arr3();
