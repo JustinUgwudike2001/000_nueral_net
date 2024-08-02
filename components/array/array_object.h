@@ -10,10 +10,10 @@ class Array {
 
         Array();
         Array(Shape shape);
-        Array(int _shape_0); //Array1;
-        Array(int _shape_0, int _shape_1); //Array2
-        Array(int _shape_0, int _shape_1, int _shape_2); //Array3
-        Array(int _shape_0, int _shape_1, int _shape_2, int _shape_3); //Array4
+        Array(std::initializer_list<int> dims); //Array1;
+        // Array(int _shape_0, int _shape_1); //Array2
+        // Array(int _shape_0, int _shape_1, int _shape_2); //Array3
+        // Array(int _shape_0, int _shape_1, int _shape_2, int _shape_3); //Array4
 
         //basic ops
         Array operator=(const Array& arr2);
