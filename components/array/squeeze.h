@@ -1,6 +1,7 @@
 #include "stack.h"
 
-Array Array::squeeze(int dim){
+template <typename D>
+Array<D> Array<D>::squeeze(int dim){
     if (dim < 0 || dim > this->shape.dims()){
         std::cout<<"Invalid dim: "<<dim<<std::endl;
         exit(0);
@@ -25,7 +26,8 @@ Array Array::squeeze(int dim){
     return array;
 }
 
-Array Array::unsqueeze(int dim){
+template <typename D>
+Array<D> Array<D>::unsqueeze(int dim){
     if (dim < 0 || dim > this->shape.dims()){
         std::cout<<"Invalid dim: "<<dim<<std::endl;
         exit(0);
@@ -49,11 +51,11 @@ Array Array::unsqueeze(int dim){
 int test_squeeze(){
     
     std::cout<<std::endl<<"ARRAY2::::::::::: "<<std::endl;
-    Array array2(4,3);
+    Array<float> array2({4,3});
     array2.lin();
     array2.print();
 
-    Array result = array2.unsqueeze(0);
+    Array<float> result = array2.unsqueeze(0);
     result.print();
 
     result = array2.unsqueeze(1);
@@ -64,7 +66,7 @@ int test_squeeze(){
 
 
     std::cout<<std::endl<<"ARRAY2_1::::::::: "<<std::endl;
-    Array array3(4,3,2,1);
+    Array<float> array3({4,3,2,1});
     array3.lin();
     array3.print();
 
@@ -72,7 +74,7 @@ int test_squeeze(){
     result.print();
 
     std::cout<<std::endl<<"ARRAY2_2::::::::: "<<std::endl;
-    Array array4(4,3,1,2);
+    Array<float> array4({4,3,1,2});
     array4.lin();
     array4.print();
 
@@ -80,7 +82,7 @@ int test_squeeze(){
     result.print();
 
     std::cout<<std::endl<<"ARRAY2_3::::::::: "<<std::endl;
-    Array array5(1,4,3,2);
+    Array<float> array5({1,4,3,2});
     array5.lin();
     array5.print();
 
