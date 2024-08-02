@@ -75,9 +75,15 @@ class Array {
         void print_grad();
         void print();
 
-        Shape get_shape();
-        std::vector<float> get_data();
-        std::vector<float> get_grad();
+        inline Shape get_shape(){
+            return this->shape;
+        }
+        inline std::vector<float> get_data(){
+            return this->data;  
+        }
+        inline std::vector<float> get_grad(){
+            return this->dots;
+        }
 
         //void to_array2();
 
@@ -114,14 +120,3 @@ void Array::set_name(std::string string){
 
     strcpy(this->name, string.c_str());
 }
-
-Shape Array::get_shape(){
-    return this->shape;
-}
-std::vector<float> Array::get_data(){
-    return this->data;
-}
-std::vector<float> Array::get_grad(){
-    return this->dots;
-}
-
