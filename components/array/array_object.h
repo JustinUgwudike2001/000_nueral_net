@@ -14,8 +14,8 @@ class Array {
 
         //basic ops
         Array operator=(const Array& arr2);
-        template <typename U>
-        Array& operator=(Array<U>& arr2);
+        // template <typename U>
+        // Array& operator=(Array<U>& arr2);
 
         Array operator+(D rhs);
         Array operator-(D rhs);

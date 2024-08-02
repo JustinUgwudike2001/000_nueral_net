@@ -1,6 +1,8 @@
 #include "squeeze.h"
-Array Array::dot(Array& rhs){
-    Array arr;
+
+template <typename D>
+Array<D> Array<D>::dot(Array<D>& rhs){
+    Array<D> arr;
     
     switch(this->rank){
         case 1:
@@ -24,10 +26,11 @@ Array Array::dot(Array& rhs){
     return arr;
 }
 
-Array Array::try_dot_arr1(Array& rhs){
-    Array lhs, _rhs, result;
+template <typename D>
+Array<D> Array<D>::try_dot_arr1(Array<D>& rhs){
+    Array<D> lhs, _rhs, result;
     int dim1, dim2;
-    std::vector<Array> arrays, result_arrays;
+    std::vector<Array<D>> arrays, result_arrays;
 
     switch(rhs.rank){
         case 1:
@@ -40,14 +43,20 @@ Array Array::try_dot_arr1(Array& rhs){
             break;
         case 3:
             //arr1.arr3
+            printf("here1\n");
             dim1 = rhs.shape.shape()[1];
             dim2 = rhs.shape.shape()[2];
-            
+            printf("here2\n");
             _rhs = rhs;
-            _rhs.reshape(rhs.shape.shape()[0], dim1 * dim2);
+            printf("here3\n");
+            _rhs.reshape({rhs.shape.shape()[0], dim1 * dim2});
+            printf("here5\n");
             result = this->try_dot(*this, _rhs);
-            result = result.reshape(this->get_shape().shape()[0], dim1, dim2);
+            printf("here5\n");
+            result = result.reshape({this->get_shape().shape()[0], dim1, dim2});
+            printf("here6\n");
             result = result.squeeze(0);
+            printf("here7\n");
             break;
         case 4:
             //arr1.arr4
@@ -57,14 +66,14 @@ Array Array::try_dot_arr1(Array& rhs){
 
             for(int i = 0; i <rhs.shape.shape()[3]; i++){
                 _rhs = arrays[i];
-                _rhs.reshape(arrays[0].shape.shape()[0], dim1 * dim2);
+                _rhs.reshape({arrays[0].shape.shape()[0], dim1 * dim2});
 
                 result = this->try_dot(*this, _rhs);
-                result = result.reshape(this->shape.shape()[0], dim1, dim2);
+                result = result.reshape({this->shape.shape()[0], dim1, dim2});
                 result_arrays.push_back(result);
             }
 
-            result = stack(result_arrays, rhs.shape.shape()[3], 3);
+            result = stack(result_arrays, 3);
             result = result.squeeze(0);
             break;
         default: 
@@ -75,10 +84,11 @@ Array Array::try_dot_arr1(Array& rhs){
     
     return result;
 }
-Array Array::try_dot_arr2(Array& rhs){
-    Array lhs, _rhs, result;
+template <typename D>
+Array<D> Array<D>::try_dot_arr2(Array<D>& rhs){
+    Array<D> lhs, _rhs, result;
     int dim1, dim2;
-    std::vector<Array> arrays, result_arrays;
+    std::vector<Array<D>> arrays, result_arrays;
 
     switch(rhs.rank){
         case 1:
@@ -95,9 +105,9 @@ Array Array::try_dot_arr2(Array& rhs){
             dim2 = rhs.shape.shape()[2];
 
             _rhs = rhs;
-            _rhs.reshape(rhs.shape.shape()[0], dim1 * dim2);
+            _rhs.reshape({rhs.shape.shape()[0], dim1 * dim2});
             result = this->try_dot(*this, _rhs);
-            result = result.reshape(this->get_shape().shape()[0], dim1, dim2);
+            result = result.reshape({this->get_shape().shape()[0], dim1, dim2});
             break;
         case 4:
             //arr2.arr4
@@ -107,14 +117,14 @@ Array Array::try_dot_arr2(Array& rhs){
 
             for(int i = 0; i <rhs.shape.shape()[3]; i++){
                 _rhs = arrays[i];
-                _rhs.reshape(arrays[0].shape.shape()[0], dim1 * dim2);
+                _rhs.reshape({arrays[0].shape.shape()[0], dim1 * dim2});
                 
                 result = this->try_dot(*this, _rhs);
-                result = result.reshape(this->shape.shape()[0], dim1, dim2);
+                result = result.reshape({this->shape.shape()[0], dim1, dim2});
                 result_arrays.push_back(result);
             }
 
-            result = stack(result_arrays, rhs.shape.shape()[3], 3);
+            result = stack(result_arrays, 3);
             break;
         default:
             std::cout<<"Cannot compute dot product between array" <<this->rank<<" and array"<<rhs.rank<<std::endl;
@@ -124,8 +134,9 @@ Array Array::try_dot_arr2(Array& rhs){
 
     return result;
 }
-Array Array::try_dot_arr3(Array& rhs){
-    Array lhs, _rhs, result;
+template <typename D>
+Array<D> Array<D>::try_dot_arr3(Array<D>& rhs){
+    Array<D> lhs, _rhs, result;
     int dim1, dim2, dim3, dim4;
 
 
@@ -136,10 +147,10 @@ Array Array::try_dot_arr3(Array& rhs){
             dim1 = lhs.shape.shape()[0];
             dim2 = lhs.shape.shape()[1];
 
-            lhs.reshape(dim1 * dim2, lhs.shape.shape()[2]);
+            lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
 
             result = this->try_dot(lhs, rhs);
-            result = result.reshape(dim1, dim2, rhs.shape.shape()[1]);
+            result = result.reshape({dim1, dim2, rhs.shape.shape()[1]});
             result = result.squeeze(2);
             break;
         case 2:
@@ -148,10 +159,10 @@ Array Array::try_dot_arr3(Array& rhs){
             dim1 = lhs.shape.shape()[0];
             dim2 = lhs.shape.shape()[1];
 
-            lhs.reshape(dim1 * dim2, lhs.shape.shape()[2]);
+            lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
 
             result = this->try_dot(lhs, rhs);
-            result = result.reshape(dim1, dim2, rhs.shape.shape()[1]);
+            result = result.reshape({dim1, dim2, rhs.shape.shape()[1]});
             break;
         case 3:
             //arr3.arr3
@@ -163,11 +174,11 @@ Array Array::try_dot_arr3(Array& rhs){
             dim3 = rhs.shape.shape()[1];
             dim4 = rhs.shape.shape()[2];
 
-            lhs.reshape(dim1 * dim2, lhs.shape.shape()[2]);
-            _rhs.reshape(rhs.shape.shape()[0], dim3 * dim4);
+            lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
+            _rhs.reshape({rhs.shape.shape()[0], dim3 * dim4});
 
             result = this->try_dot(lhs, _rhs);
-            result = result.reshape(dim1, dim2, dim3, dim4);
+            result = result.reshape({dim1, dim2, dim3, dim4});
             break;
         default:
             std::cout<<"Cannot compute dot product between array" <<this->rank<<" and array"<<rhs.rank<<std::endl;
@@ -177,10 +188,11 @@ Array Array::try_dot_arr3(Array& rhs){
 
     return result;
 }
-Array Array::try_dot_arr4(Array& rhs){
-    Array lhs, _rhs, result;
+template <typename D>
+Array<D> Array<D>::try_dot_arr4(Array<D>& rhs){
+    Array<D> lhs, _rhs, result;
     int dim1, dim2, dim3, dim4;
-    std::vector<Array> arrays, result_arrays;
+    std::vector<Array<D>> arrays, result_arrays;
 
     switch(rhs.rank){
         case 1:
@@ -191,13 +203,13 @@ Array Array::try_dot_arr4(Array& rhs){
 
             for(int i = 0; i < this->shape.shape()[0]; i++){
                 lhs = arrays[i];
-                lhs.reshape(dim1 * dim2, arrays[0].get_shape().shape()[2]);
+                lhs.reshape({dim1 * dim2, arrays[0].get_shape().shape()[2]});
 
                 result = this->try_dot(lhs, rhs);
-                result = result.reshape(dim1, dim2, rhs.get_shape().shape()[1]);
+                result = result.reshape({dim1, dim2, rhs.get_shape().shape()[1]});
                 result_arrays.push_back(result);
             }
-            result = stack(result_arrays, this->shape.shape()[0], 0);
+            result = stack(result_arrays, 0);
             result = result.squeeze(3);
             break;
         case 2:
@@ -208,13 +220,13 @@ Array Array::try_dot_arr4(Array& rhs){
 
             for(int i = 0; i < this->shape.shape()[0]; i++){
                 lhs = arrays[i];
-                lhs.reshape(dim1 * dim2, arrays[0].get_shape().shape()[2]);
+                lhs.reshape({dim1 * dim2, arrays[0].get_shape().shape()[2]});
 
                 result = this->try_dot(lhs, rhs);
-                result = result.reshape(dim1, dim2, rhs.get_shape().shape()[1]);
+                result = result.reshape({dim1, dim2, rhs.get_shape().shape()[1]});
                 result_arrays.push_back(result);
             }
-            result = stack(result_arrays, this->shape.shape()[0], 0);
+            result = stack(result_arrays, 0);
             break;
         default:
             std::cout<<"Cannot compute dot product between array" <<this->rank<<" and array"<<rhs.rank<<std::endl;
@@ -225,7 +237,8 @@ Array Array::try_dot_arr4(Array& rhs){
     return result;
 }
 
-Array Array::try_dot(Array& lhs, Array& rhs){
+template <typename D>
+Array<D> Array<D>::try_dot(Array<D>& lhs, Array<D>& rhs){
     if (lhs.shape.shape()[1] != rhs.shape.shape()[0]) {
         std::cout << "These arrays are not equal size";
         exit(0);
@@ -236,10 +249,8 @@ Array Array::try_dot(Array& lhs, Array& rhs){
     int sum_dim = lhs.shape.shape()[1];
 
 
-    std::vector<float> data(dim_x * dim_y, 0.);
-
-
-    Array result(dim_x, dim_y);
+    std::vector<D> data(dim_x * dim_y);
+    Array<D> result({dim_x, dim_y});
 
     for (int k = 0; k < dim_x; k++){
         for(int j = 0; j < dim_y; j++){
@@ -259,17 +270,17 @@ Array Array::try_dot(Array& lhs, Array& rhs){
 int test_dot(){
     
     std::cout<<"ARRAY1::::::::::: "<<std::endl;
-    Array array1(5);
+    Array<float> array1({5});
     array1.set_name("arr1");
     array1.lin();
     array1.print();
 
-    Array array1_1(5);
+    Array<float> array1_1({5});
     array1_1.set_name("arr2");
     array1_1 = array1.t();
     array1_1.print();
 
-    Array result;
+    Array<float> result;
     result.set_name("result");
 
     //arr1.(arr1.t())
@@ -285,12 +296,12 @@ int test_dot(){
     std::cout<<std::endl;
 
     std::cout<<"ARRAY2::::::::::: "<<std::endl;
-    Array array2(2, 5);
+    Array<float> array2({2, 5});
     array2.set_name("arr3");
     array2.lin();
     array2.print();
 
-    Array array2_1(5, 2);
+    Array<float> array2_1({5, 2});
     array2_1.set_name("arr4");
     array2_1.lin();
     array2_1.print();
@@ -320,12 +331,12 @@ int test_dot(){
     std::cout<<std::endl;
     std::cout<<"ARRAY3::::::::::: "<<std::endl;
 
-    Array array3(5, 2, 3);
+    Array<float> array3({5, 2, 3});
     array3.set_name("arr5");
     array3.lin();
     array3.print();
 
-    Array array3_1(3, 2, 5);
+    Array<float> array3_1({3, 2, 5});
     array3_1.set_name("arr6");
     array3_1.lin();
     array3_1.print();
@@ -339,7 +350,7 @@ int test_dot(){
     
     //arr3.permute().(arr1.t())
     std::cout<<"arr5.arr2"<<std::endl;
-    array3 = array3.permute(2,1,0);
+    array3 = array3.permute({2, 1, 0});
     result = array3.dot(array1_1);
     result.print();
     std::cout<<std::endl;
@@ -352,7 +363,7 @@ int test_dot(){
 
     //arr3.t().(arr2)
     std::cout<<"arr5.arr4"<<std::endl;
-    array3 = array3.permute(2,1,0);
+    array3 = array3.permute({2, 1, 0});
     array3 = array3.t();
     //array3.print();
     result = array3.dot(array2);
@@ -375,12 +386,12 @@ int test_dot(){
 
     std::cout<<"ARRAY4::::::::::: "<<std::endl;
 
-    Array array4(5, 4, 3, 2);
+    Array<float> array4({5, 4, 3, 2});
     array4.set_name("arr7");
     array4.lin();
     array4.print();
 
-    Array array4_1(2, 3, 4, 5);
+    Array<float> array4_1({2, 3, 4, 5});
     array4_1.set_name("arr8");
     array4_1.lin();
     array4_1.print();

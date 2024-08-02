@@ -15,23 +15,26 @@ inline Array<D> Array<D>::operator=(const Array& arr2){
     return *this;
 }
 
-template <typename D>
-template <typename U>
-inline Array<D>& Array<D>::operator=(Array<U>& arr2){    
-    // Clear current data and resize
-    data.clear();
-    data.resize(arr2.get_shape().size());
+// template <typename D>
+// template <typename U>
+// inline Array<D>& Array<D>::operator=(Array<U>& arr2){    
+//     // Clear current data and resize
+//     data.clear();
+//     data.resize(arr2.get_shape().size());
 
-    std::vector<U> new_data = arr2.get_data();
-    std::vector<float> new_dots = arr2.get_grad();
+//     this->shape = arr2.get_shape();
+//     this->rank = arr2.get_shape().dims();
 
-    for(int i = 0; i < arr2.get_shape().size(); i++){
-        data[i] = new_data[i];
-        dots[i] = new_dots[i];
-    }
+//     std::vector<U> new_data = arr2.get_data();
+//     std::vector<float> new_dots = arr2.get_grad();
 
-    return *this;
-}
+//     for(int i = 0; i < arr2.get_shape().size(); i++){
+//         data[i] = new_data[i];
+//         dots[i] = new_dots[i];
+//     }
+
+//     return *this;
+// }
 
 template <typename D>
 Array<D> Array<D>::operator+(D rhs){
@@ -219,12 +222,12 @@ int test_basic_operators(){
     array4 = array4 - array1;
     array4.print();
 
-    Array<int> ints({10});
-    ints.lin();
-    ints.print();
-    Array<float> floats({10});
-    floats = ints;
-    floats.print();
+    // Array<int> ints({10});
+    // ints.lin();
+    // ints.print();
+    // Array<float> floats({10});
+    // floats = ints;
+    // floats.print();
     
     return 0;
 }
