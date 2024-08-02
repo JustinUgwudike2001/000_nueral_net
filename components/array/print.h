@@ -1,6 +1,7 @@
 #include "constructors.h"
 
-void Array::print(){
+template <typename D>
+void Array<D>::print(){
     switch(this->rank){
         case 1:
             this->print_arr2();
@@ -22,7 +23,8 @@ void Array::print(){
     }
 }
 
-void Array::print_arr2(){
+template <typename D>
+void Array<D>::print_arr2(){
     std::vector<int> strides = this->shape.strides();
     std::vector<int> shape = this->shape.shape();
 
@@ -57,9 +59,10 @@ void Array::print_arr2(){
         if (i < num_dims - 1) std::cout<<", ";
     }
 
-    std::cout<<"), rank:"<<this->rank<<")"<<std::endl;
+    std::cout<<"), rank: "<<this->rank<<", dtype="<<type_info(D)<<" )"<<std::endl;
 }
-void Array::print_arr3(){
+template <typename D>
+void Array<D>::print_arr3(){
     std::vector<int> strides = this->shape.strides();
     std::vector<int> shape = this->shape.shape();
 
@@ -102,7 +105,8 @@ void Array::print_arr3(){
 
     std::cout<<"), rank:"<<this->rank<<")"<<std::endl;
 }
-void Array::print_arr4(){
+template <typename D>
+void Array<D>::print_arr4(){
     std::vector<int> strides = this->shape.strides();
     std::vector<int> shape = this->shape.shape();
 
@@ -159,7 +163,8 @@ void Array::print_arr4(){
     std::cout<<"), rank:"<<this->rank<<")"<<std::endl;
 }
 
-void Array::print_grad(){
+template <typename D>
+void Array<D>::print_grad(){
     std::cout<<this->name<<"_g:({";
 
     for (int i = 0; i < this->shape.size(); i++){
@@ -190,22 +195,22 @@ void Array::print_grad(){
 
 int test_print(){
     
-    Array empty_arr;
+    Array<float> empty_arr;
     //empty_arr.print();
 
-    Array array1(2);
+    Array<float> array1(2);
     array1.print();
     std::cout<<std::endl;
 
-    Array array2(2, 3);
+    Array<int> array2(2, 3);
     array2.print();
     std::cout<<std::endl;
 
-    Array array3(2, 3, 4);
+    Array<float> array3(2, 3, 4);
     array3.print();
     std::cout<<std::endl;
     
-    Array array4(2, 3, 4, 5);
+    Array<int> array4(2, 3, 4, 5);
     array4.print();
 
     empty_arr.print();

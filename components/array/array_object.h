@@ -4,6 +4,7 @@
 #include "shape.h"
 #include <math.h>
 
+template<typename D>
 class Array {
     public:
 
@@ -16,11 +17,11 @@ class Array {
 
         //basic ops
         Array operator=(const Array& arr2);
-        Array operator+(float rhs);
-        Array operator-(float rhs);
-        Array operator/(float rhs);
-        Array operator*(float rhs);
-        Array operator^(int rhs);
+        Array operator+(D rhs);
+        Array operator-(D rhs);
+        Array operator/(D rhs);
+        Array operator*(D rhs);
+        Array operator^(D rhs);
 
         //array ops
         Array operator+(Array& rhs);
@@ -29,10 +30,10 @@ class Array {
         Array operator/(Array& rhs);
 
         //access ops
-        float& operator()(std::size_t idx_1);
-        float& operator()(std::size_t idx_1, std::size_t idx_2);
-        float& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3);
-        float& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4);
+        D& operator()(std::size_t idx_1);
+        D& operator()(std::size_t idx_1, std::size_t idx_2);
+        D& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3);
+        D& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4);
 
         Array broadcast();
 
@@ -63,9 +64,9 @@ class Array {
 
         void set_name(std::string string);
 
-        void fill_arr(float _data[], int size);
-        void fill_vec(std::vector<float> _data, int size);
-        void fill_grad_vec(std::vector<float> _data, std::vector<float> _dots, int size);
+        void fill_arr(D _data[], int size);
+        void fill_vec(std::vector<D> _data, int size);
+        void fill_grad_vec(std::vector<D> _data, std::vector<float> _dots, int size);
 
         Array ones();
         static Array ones(int shape_0);
@@ -95,7 +96,7 @@ class Array {
         inline Shape get_shape(){
             return this->shape;
         }
-        inline std::vector<float> get_data(){
+        inline std::vector<D> get_data(){
             return this->data;  
         }
         inline std::vector<float> get_grad(){
@@ -109,7 +110,7 @@ class Array {
         Shape shape;
         int rank;
 
-        std::vector<float> data;
+        std::vector<D> data;
         std::vector<float> dots;
 
         Array create_arr();
@@ -126,7 +127,8 @@ class Array {
         Array try_dot(Array& lhs, Array& rhs);
 };
 
-void Array::set_name(std::string string){
+template <typename D>
+void Array<D>::set_name(std::string string){
     if (string.size() > 8) {
         std::cout << "that name is too long!"<< std::endl;
         return; 

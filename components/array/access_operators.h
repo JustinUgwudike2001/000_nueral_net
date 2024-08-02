@@ -1,6 +1,7 @@
 #include "basic_operators.h"
 
-inline float& Array::operator()(std::size_t idx_1){
+template <typename D>
+inline D& Array<D>::operator()(std::size_t idx_1){
     if (this->rank != 1) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);
@@ -12,7 +13,8 @@ inline float& Array::operator()(std::size_t idx_1){
     return data[idx_1];
 }
 
-inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2){
+template <typename D>
+inline D& Array<D>::operator()(std::size_t idx_1, std::size_t idx_2){
     if (this->rank != 2) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);
@@ -25,7 +27,8 @@ inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2){
     return data[(idx_1 * this->shape.strides()[0]) + idx_2];
 }
 
-inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3){
+template <typename D>
+inline D& Array<D>::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3){
     if (this->rank != 3) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);
@@ -38,8 +41,8 @@ inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_
     return data[(idx_1 * this->shape.strides()[0]) + (idx_2 * this->shape.strides()[1]) + idx_3];
 }
 
-
-inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4){
+template <typename D>
+inline D& Array<D>::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4){
     if (this->rank != 4) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);
@@ -54,22 +57,22 @@ inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_
 
 int test_access_operators(){
 
-    Array array1(16);
+    Array<float> array1(16);
     array1.lin();
     array1.print();
     std::cout<<"array1[2]: "<<array1(2)<<std::endl<<std::endl;
 
-    Array array2(2, 4);
+    Array<int> array2(2, 4);
     array2.lin();
     array2.print();
     std::cout<<"array2[1][2]: "<<array2(1, 2)<<std::endl<<std::endl;
     
-    Array array3(2, 4, 5);
+    Array<float> array3(2, 4, 5);
     array3.lin();
     array3.print();
     std::cout<<"array3[1][2][3]: "<<array3(1, 2, 3)<<std::endl<<std::endl;
     
-    Array array4(2, 4, 5, 6);
+    Array<float> array4(2, 4, 5, 6);
     array4.lin();
     array4.print();
     std::cout<<"array4[1][2][3][4]: "<<array4(1, 2, 3, 4)<<std::endl<<std::endl;

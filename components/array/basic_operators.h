@@ -1,6 +1,7 @@
 #include "fill_array.h"
 
-inline Array Array::operator=(const Array& arr2){
+template <typename D>
+inline Array<typename D> Array<D>::operator=(const Array& arr2){
 
     if (this == &arr2)
         return *this;
@@ -13,7 +14,9 @@ inline Array Array::operator=(const Array& arr2){
     
     return *this;
 }
-Array Array::operator+(float rhs){
+
+template <typename D>
+Array<D> Array<D>::operator+(D rhs){
     Array arr = this->create_arr();
 
     for(int i = 0; i < this->shape.size(); i++){
@@ -23,7 +26,8 @@ Array Array::operator+(float rhs){
 
     return arr;
 }
-Array Array::operator-(float rhs){
+template <typename D>
+Array<D> Array<D>::operator-(D rhs){
     Array arr = this->create_arr();
 
     for(int i = 0; i < this->shape.size(); i++){
@@ -33,7 +37,8 @@ Array Array::operator-(float rhs){
 
     return arr;
 }
-Array Array::operator/(float rhs){
+template <typename D>
+Array<D> Array<D>::operator/(D rhs){
     Array arr = this->create_arr();
 
     for(int i = 0; i < this->shape.size(); i++){
@@ -43,7 +48,8 @@ Array Array::operator/(float rhs){
 
     return arr;
 }
-Array Array::operator*(float rhs){
+template <typename D>
+Array<D> Array<D>::operator*(D rhs){
     Array arr = this->create_arr();
 
     for(int i = 0; i < this->shape.size(); i++){
@@ -53,7 +59,8 @@ Array Array::operator*(float rhs){
 
     return arr;
 }
-Array Array::operator^(int rhs){
+template <typename D>
+Array<D> Array<D>::operator^(D rhs){
     Array arr = this->create_arr();
     
     for(int i = 0; i < this->shape.size(); i++){
@@ -63,8 +70,8 @@ Array Array::operator^(int rhs){
 
     return arr;
 }
-
-Array Array::operator+(Array& rhs){
+template <typename D>
+Array<typename D> Array<D>::operator+(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -80,7 +87,8 @@ Array Array::operator+(Array& rhs){
 
     return arr;
 }
-Array Array::operator-(Array& rhs){
+template <typename D>
+Array<typename D> Array<D>::operator-(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -96,7 +104,8 @@ Array Array::operator-(Array& rhs){
 
     return arr;
 }
-Array Array::operator/(Array& rhs){
+template <typename D>
+Array<typename D> Array<D>::operator/(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -112,7 +121,8 @@ Array Array::operator/(Array& rhs){
 
     return arr;
 }
-Array Array::operator*(Array& rhs){
+template <typename D>
+Array<typename D> Array<D>::operator*(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -131,10 +141,10 @@ Array Array::operator*(Array& rhs){
 
 int test_basic_operators(){
 
-    Array array1(16);
+    Array<float> array1(16);
     array1.lin();
     array1.print();
-    Array array1_1(16);
+    Array<float> array1_1(16);
     array1_1.ones();
     array1_1.set_name("array1_1");
     array1_1.print();
@@ -166,7 +176,7 @@ int test_basic_operators(){
 
     std::cout<<std::endl;
 
-    Array array2(4,4);
+    Array<float> array2(4,4);
     array2.zeros();
     array2.print();
 
@@ -183,7 +193,7 @@ int test_basic_operators(){
     array2.print();
     std::cout<<std::endl;
 
-    Array array4(2,2,2,2);
+    Array<float> array4(2,2,2,2);
     array4.ones();
     array4.print();
 
