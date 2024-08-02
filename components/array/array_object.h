@@ -73,8 +73,21 @@ class Array {
         static Array ones(int shape_0, int shape_1, int shape_2);
         static Array ones(int shape_0, int shape_1, int shape_2, int shape_3);
         Array random();
+        static Array random(int shape_0);
+        static Array random(int shape_0, int shape_1);
+        static Array random(int shape_0, int shape_1, int shape_2);
+        static Array random(int shape_0, int shape_1, int shape_2, int shape_3);
         Array zeros();
+        static Array zeros(int shape_0);
+        static Array zeros(int shape_0, int shape_1);
+        static Array zeros(int shape_0, int shape_1, int shape_2);
+        static Array zeros(int shape_0, int shape_1, int shape_2, int shape_3);
         Array lin();
+        static Array lin(int shape_0);
+        static Array lin(int shape_0, int shape_1);
+        static Array lin(int shape_0, int shape_1, int shape_2);
+        static Array lin(int shape_0, int shape_1, int shape_2, int shape_3);
+
 
         void print_grad();
         void print();
