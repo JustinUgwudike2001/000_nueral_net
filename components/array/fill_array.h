@@ -53,16 +53,25 @@ inline void Array<D>::fill_grad_vec(std::vector<D> _data, std::vector<float> _do
 }
 
 template <>
-inline Array<typename float> Array<float>::ones(){
+inline Array<float> Array<float>::ones(){
     for(int i = 0; i< this->shape.size(); i++){
-        data[i] = 1.;
+        data[i] = float(1.);
         dots[i] = 1.;
     }
 
     return *this;
 }
 template <>
-inline Array<typename float> Array<float>::random(){
+inline Array<int> Array<int>::ones(){
+    for(int i = 0; i< this->shape.size(); i++){
+        data[i] = int(1);
+        dots[i] = 1.;
+    }
+
+    return *this;
+}
+template <>
+inline Array<float> Array<float>::random(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = float((std::rand() % 1000) + 1)/1000;
         dots[i] = 1.;
@@ -71,16 +80,34 @@ inline Array<typename float> Array<float>::random(){
     return *this;
 }
 template <>
-inline Array<typename float> Array<float>::zeros(){
+inline Array<int> Array<int>::random(){
     for(int i = 0; i< this->shape.size(); i++){
-        data[i] = 0.;
+        data[i] = int((std::rand() % 1000) + 1);
         dots[i] = 1.;
     }
 
     return *this;
 }
 template <>
-inline Array<typename float> Array<float>::lin(){
+inline Array<float> Array<float>::zeros(){
+    for(int i = 0; i< this->shape.size(); i++){
+        data[i] = float(0.);
+        dots[i] = 1.;
+    }
+
+    return *this;
+}
+template <>
+inline Array<int> Array<int>::zeros(){
+    for(int i = 0; i< this->shape.size(); i++){
+        data[i] = int(0);
+        dots[i] = 1.;
+    }
+
+    return *this;
+}
+template <>
+inline Array<float> Array<float>::lin(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = float(i);
         dots[i] = 1.;
@@ -88,102 +115,111 @@ inline Array<typename float> Array<float>::lin(){
 
     return *this;
 }
+template <>
+inline Array<int> Array<int>::lin(){
+    for(int i = 0; i< this->shape.size(); i++){
+        data[i] = int(i);
+        dots[i] = 1.;
+    }
+
+    return *this;
+}
 
 template <typename D>
-inline Array<typename D> Array<D>::ones(int shape_0){
+inline Array<D> Array<D>::ones(int shape_0){
     Array<D> arr(shape_0);
     arr.ones();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::ones(int shape_0, int shape_1){
+inline Array<D> Array<D>::ones(int shape_0, int shape_1){
     Array<D> arr(shape_0, shape_1);
     arr.ones();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::ones(int shape_0, int shape_1, int shape_2){
+inline Array<D> Array<D>::ones(int shape_0, int shape_1, int shape_2){
     Array<D> arr(shape_0, shape_1, shape_2);
     arr.ones();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::ones(int shape_0, int shape_1, int shape_2, int shape_3){
+inline Array<D> Array<D>::ones(int shape_0, int shape_1, int shape_2, int shape_3){
     Array<D> arr(shape_0, shape_1, shape_2, shape_3);
     arr.ones();
     return arr;
 }
 
 template <typename D>
-inline Array<typename D> Array<D>::random(int shape_0){
+inline Array<D> Array<D>::random(int shape_0){
     Array<D> arr(shape_0);
     arr.random();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::random(int shape_0, int shape_1){
+inline Array<D> Array<D>::random(int shape_0, int shape_1){
     Array<D> arr(shape_0, shape_1);
     arr.random();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::random(int shape_0, int shape_1, int shape_2){
+inline Array<D> Array<D>::random(int shape_0, int shape_1, int shape_2){
     Array<D> arr(shape_0, shape_1, shape_2);
     arr.random();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::random(int shape_0, int shape_1, int shape_2, int shape_3){
+inline Array<D> Array<D>::random(int shape_0, int shape_1, int shape_2, int shape_3){
     Array<D> arr(shape_0, shape_1, shape_2, shape_3);
     arr.random();
     return arr;
 }
 
 template <typename D>
-inline Array<typename D> Array<D>::zeros(int shape_0){
-    Arra<D> arr(shape_0);
+inline Array<D> Array<D>::zeros(int shape_0){
+    Array<D> arr(shape_0);
     arr.zeros();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::zeros(int shape_0, int shape_1){
+inline Array<D> Array<D>::zeros(int shape_0, int shape_1){
     Array<D> arr(shape_0, shape_1);
     arr.zeros();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::zeros(int shape_0, int shape_1, int shape_2){
+inline Array<D> Array<D>::zeros(int shape_0, int shape_1, int shape_2){
     Array<D> arr(shape_0, shape_1, shape_2);
     arr.zeros();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::zeros(int shape_0, int shape_1, int shape_2, int shape_3){
+inline Array<D> Array<D>::zeros(int shape_0, int shape_1, int shape_2, int shape_3){
     Array<D> arr(shape_0, shape_1, shape_2, shape_3);
     arr.zeros();
     return arr;
 }
 
 template <typename D>
-inline Array<typename D> Array<D>::lin(int shape_0){
+inline Array<D> Array<D>::lin(int shape_0){
     Array<D> arr(shape_0);
     arr.lin();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::lin(int shape_0, int shape_1){
+inline Array<D> Array<D>::lin(int shape_0, int shape_1){
     Array<D> arr(shape_0, shape_1);
     arr.lin();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::lin(int shape_0, int shape_1, int shape_2){
+inline Array<D> Array<D>::lin(int shape_0, int shape_1, int shape_2){
     Array<D> arr(shape_0, shape_1, shape_2);
     arr.lin();
     return arr;
 }
 template <typename D>
-inline Array<typename D> Array<D>::lin(int shape_0, int shape_1, int shape_2, int shape_3){
+inline Array<D> Array<D>::lin(int shape_0, int shape_1, int shape_2, int shape_3){
     Array<D> arr(shape_0, shape_1, shape_2, shape_3);
     arr.lin();
     return arr;
@@ -232,28 +268,28 @@ int test_fill_array(){
     return 0;
 }
 int test_fill_array_static(){
-    Array arr = Array<int>::ones(1);
+    Array<int> arr = Array<int>::ones(1);
     arr.print();
 
-    Array arr1 = Array<int>::ones(1, 2);
+    Array<int> arr1 = Array<int>::ones(1, 2);
     arr1.print();
 
-    Array arr2 = Array<int>::ones(1, 2, 3);
+    Array<int> arr2 = Array<int>::ones(1, 2, 3);
     arr2.print();
 
-    Array arr3 = Array<int>::ones(1, 2, 3, 4);
+    Array<int> arr3 = Array<int>::ones(1, 2, 3, 4);
     arr3.print();
 
-    Array arr4 = Array<float>::random(1);
+    Array<float> arr4 = Array<float>::random(1);
     arr4.print();
 
-    Array arr5 = Array<int>::random(1, 2);
+    Array<int> arr5 = Array<int>::random(1, 2);
     arr5.print();
 
-    Array arr6 = Array<int>::random(1, 2, 3);
+    Array<int> arr6 = Array<int>::random(1, 2, 3);
     arr6.print();
 
-    Array arr7 = Array<float>::random(1, 2, 3, 4);
+    Array<float> arr7 = Array<float>::random(1, 2, 3, 4);
     arr7.print();
 
     return 0;

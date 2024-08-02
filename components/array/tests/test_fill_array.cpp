@@ -2,7 +2,7 @@
 
 int main()
 {
-    //test_fill_array();
-    test_fill_array_static();
+    test_fill_array();
+    //test_fill_array_static();
 
 }
