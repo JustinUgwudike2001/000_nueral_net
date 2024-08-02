@@ -1,7 +1,7 @@
 #include "fill_array.h"
 
 template <typename D>
-inline Array<typename D> Array<D>::operator=(const Array& arr2){
+inline Array<D> Array<D>::operator=(const Array& arr2){
 
     if (this == &arr2)
         return *this;
@@ -12,6 +12,24 @@ inline Array<typename D> Array<D>::operator=(const Array& arr2){
     this->rank = arr2.rank;
     //strcpy(arr2.name, this->name);
     
+    return *this;
+}
+
+template <typename D>
+template <typename U>
+inline Array<D>& Array<D>::operator=(Array<U>& arr2){    
+    // Clear current data and resize
+    data.clear();
+    data.resize(arr2.get_shape().size());
+
+    std::vector<U> new_data = arr2.get_data();
+    std::vector<float> new_dots = arr2.get_grad();
+
+    for(int i = 0; i < arr2.get_shape().size(); i++){
+        data[i] = new_data[i];
+        dots[i] = new_dots[i];
+    }
+
     return *this;
 }
 
@@ -71,7 +89,7 @@ Array<D> Array<D>::operator^(D rhs){
     return arr;
 }
 template <typename D>
-Array<typename D> Array<D>::operator+(Array& rhs){
+Array<D> Array<D>::operator+(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -88,7 +106,7 @@ Array<typename D> Array<D>::operator+(Array& rhs){
     return arr;
 }
 template <typename D>
-Array<typename D> Array<D>::operator-(Array& rhs){
+Array<D> Array<D>::operator-(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -105,7 +123,7 @@ Array<typename D> Array<D>::operator-(Array& rhs){
     return arr;
 }
 template <typename D>
-Array<typename D> Array<D>::operator/(Array& rhs){
+Array<D> Array<D>::operator/(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -122,7 +140,7 @@ Array<typename D> Array<D>::operator/(Array& rhs){
     return arr;
 }
 template <typename D>
-Array<typename D> Array<D>::operator*(Array& rhs){
+Array<D> Array<D>::operator*(Array& rhs){
 
     if (this->shape.size() != rhs.shape.size()) {
         std::cout << "These arrays are not equal size";
@@ -200,6 +218,13 @@ int test_basic_operators(){
     std::cout<<"array4 - array1: " <<std::endl;
     array4 = array4 - array1;
     array4.print();
+
+    Array<int> ints(10);
+    ints.lin();
+    ints.print();
+    Array<float> floats(10);
+    floats = ints;
+    floats.print();
     
     return 0;
 }
