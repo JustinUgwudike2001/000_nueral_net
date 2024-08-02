@@ -59,7 +59,7 @@ Array::Array(int _shape_0, int _shape_1, int _shape_2, int _shape_3){
     }
 }
 
-Array Array::create_arr(){
+inline Array Array::create_arr(){
     std::vector<int> shape = this->get_shape().shape();
 
     switch(this->rank){

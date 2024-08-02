@@ -1,6 +1,6 @@
 #include "basic_operators.h"
 
-float& Array::operator()(std::size_t idx_1){
+inline float& Array::operator()(std::size_t idx_1){
     if (this->rank != 1) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);
@@ -12,7 +12,7 @@ float& Array::operator()(std::size_t idx_1){
     return data[idx_1];
 }
 
-float& Array::operator()(std::size_t idx_1, std::size_t idx_2){
+inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2){
     if (this->rank != 2) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);
@@ -25,7 +25,7 @@ float& Array::operator()(std::size_t idx_1, std::size_t idx_2){
     return data[(idx_1 * this->shape.strides()[0]) + idx_2];
 }
 
-float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3){
+inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3){
     if (this->rank != 3) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);
@@ -39,7 +39,7 @@ float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3
 }
 
 
-float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4){
+inline float& Array::operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4){
     if (this->rank != 4) {
         std::cout << "Incorrect indexing array"<<this->rank;
         exit(0);

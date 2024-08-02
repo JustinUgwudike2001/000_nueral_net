@@ -1,6 +1,6 @@
 #include "fill_array.h"
 
-Array Array::operator=(const Array& arr2){
+inline Array Array::operator=(const Array& arr2){
 
     if (this == &arr2)
         return *this;
