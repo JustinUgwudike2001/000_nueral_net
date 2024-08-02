@@ -48,7 +48,7 @@ void Array::fill_grad_vec(std::vector<float> _data, std::vector<float> _dots, in
 }
 
 
-Array Array::ones(){
+inline Array Array::ones(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = 1.;
         dots[i] = 1.;
@@ -56,7 +56,7 @@ Array Array::ones(){
 
     return *this;
 }
-Array Array::random(){
+inline Array Array::random(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = float((std::rand() % 1000) + 1)/1000;
         dots[i] = 1.;
@@ -64,7 +64,7 @@ Array Array::random(){
 
     return *this;
 }
-Array Array::zeros(){
+inline Array Array::zeros(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = 0.;
         dots[i] = 1.;
@@ -72,13 +72,28 @@ Array Array::zeros(){
 
     return *this;
 }
-Array Array::lin(){
+inline Array Array::lin(){
     for(int i = 0; i< this->shape.size(); i++){
         data[i] = float(i);
         dots[i] = 1.;
     }
 
     return *this;
+}
+
+inline Array Array::ones(int shape_0){
+    Array arr(shape_0);
+    arr.ones();
+    return arr;
+}
+inline Array Array::ones(int shape_0, int shape_1){
+
+}
+inline Array Array::ones(int shape_0, int shape_1, int shape_2){
+ 
+}
+inline Array Array::ones(int shape_0, int shape_1, int shape_2, int shape_3){
+
 }
 
 int test_fill_array(){
@@ -122,4 +137,9 @@ int test_fill_array(){
     array4.print();
     
     return 0;
+}
+
+int test_fill_array_static(){
+    Array arr = Array::ones(1);
+    arr.print();
 }
