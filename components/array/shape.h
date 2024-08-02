@@ -8,7 +8,7 @@ class Shape {
         Shape(std::vector<int> _dims, int _num_dims);
         Shape(int _dims[], int _num_dims);
 
-        void permute(int _dims[], int num);
+        void permute(std::vector<int> _dims);
 
         // Shape operator=(const Shape& s2);
         std::vector<int> shape();
@@ -72,8 +72,9 @@ Shape::Shape(int _dims[], int _num_dims){
     }
 }
 
-void Shape::permute(int _dims[], int num){
-    
+void Shape::permute(std::vector<int> _dims){
+
+    int num = _dims.size();
     std::vector<int> new_shape(num, 0);
     this->strides_vec[this->num_dims - 1] = 1;
 

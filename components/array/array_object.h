@@ -37,10 +37,7 @@ class Array {
         void operator()(D value, std::initializer_list<size_t> idxes);
 
         Array reshape(std::initializer_list<int> dims);
-        
-        Array permute(int dim1, int dim2);
-        Array permute(int dim1, int dim2, int dim3);
-        Array permute(int dim1, int dim2, int dim3, int dim4);
+        Array permute(std::initializer_list<int> dims);
         Array t();
         Array dot(Array& rhs);
 
