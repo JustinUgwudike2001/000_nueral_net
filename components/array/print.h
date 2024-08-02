@@ -198,19 +198,19 @@ int test_print(){
     Array<float> empty_arr;
     //empty_arr.print();
 
-    Array<float> array1(2);
+    Array<float> array1({2});
     array1.print();
     std::cout<<std::endl;
 
-    Array<int> array2(2, 3);
+    Array<int> array2({2, 3});
     array2.print();
     std::cout<<std::endl;
 
-    Array<float> array3(2, 3, 4);
+    Array<float> array3({2, 3, 4});
     array3.print();
     std::cout<<std::endl;
     
-    Array<int> array4(2, 3, 4, 5);
+    Array<int> array4({2, 3, 4, 5});
     array4.print();
 
     empty_arr.print();

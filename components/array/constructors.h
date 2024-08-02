@@ -67,23 +67,23 @@ Array<D>::Array(std::initializer_list<int> dims){
 //     this->dots = std::vector<float>(this->shape.size(), 0.);
 // }
 
-template<typename D>
-inline Array<D> Array<D>::create_arr(){
-    std::vector<int> shape = this->get_shape().shape();
+// template<typename D>
+// inline Array<D> Array<D>::create_arr(){
+//     std::vector<int> shape = this->get_shape().shape();
 
-    switch(this->rank){
-        case 1:
-            return Array<D>(this->shape.size());
-        case 2:
-            return Array<D>(shape[0],shape[1]);
-        case 3:
-            return Array<D>(shape[0], shape[1], shape[2]);
-        case 4:
-            return Array<D>(shape[0], shape[1], shape[2], shape[3]);
-        default:
-            return Array<D>(this->shape.size());
-    }
-}
+//     switch(this->rank){
+//         case 1:
+//             return Array<D>({this->shape.size()});
+//         case 2:
+//             return Array<D>({shape[0],shape[1]);
+//         case 3:
+//             return Array<D>(shape[0], shape[1], shape[2]);
+//         case 4:
+//             return Array<D>(shape[0], shape[1], shape[2], shape[3]);
+//         default:
+//             return Array<D>(this->shape.size());
+//     }
+// }
 
 int test_constructors(){
 

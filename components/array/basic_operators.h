@@ -35,7 +35,7 @@ inline Array<D>& Array<D>::operator=(Array<U>& arr2){
 
 template <typename D>
 Array<D> Array<D>::operator+(D rhs){
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] + rhs;
@@ -46,7 +46,7 @@ Array<D> Array<D>::operator+(D rhs){
 }
 template <typename D>
 Array<D> Array<D>::operator-(D rhs){
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] - rhs;
@@ -57,7 +57,7 @@ Array<D> Array<D>::operator-(D rhs){
 }
 template <typename D>
 Array<D> Array<D>::operator/(D rhs){
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] / rhs;
@@ -68,7 +68,7 @@ Array<D> Array<D>::operator/(D rhs){
 }
 template <typename D>
 Array<D> Array<D>::operator*(D rhs){
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] * rhs;
@@ -79,7 +79,7 @@ Array<D> Array<D>::operator*(D rhs){
 }
 template <typename D>
 Array<D> Array<D>::operator^(D rhs){
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
     
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = std::pow(this->data[i], rhs);
@@ -96,7 +96,7 @@ Array<D> Array<D>::operator+(Array& rhs){
         exit(0);
     }
 
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] + rhs.data[i];
@@ -113,7 +113,7 @@ Array<D> Array<D>::operator-(Array& rhs){
         exit(0);
     }
 
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] - rhs.data[i];
@@ -130,7 +130,7 @@ Array<D> Array<D>::operator/(Array& rhs){
         exit(0);
     }
 
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] / rhs.data[i];
@@ -147,7 +147,7 @@ Array<D> Array<D>::operator*(Array& rhs){
         exit(0);
     }
 
-    Array arr = this->create_arr();
+    Array<D> arr = Array<D>(this->shape);
 
     for(int i = 0; i < this->shape.size(); i++){
         arr.data[i] = this->data[i] * rhs.data[i];
@@ -159,10 +159,10 @@ Array<D> Array<D>::operator*(Array& rhs){
 
 int test_basic_operators(){
 
-    Array<float> array1(16);
+    Array<float> array1({16});
     array1.lin();
     array1.print();
-    Array<float> array1_1(16);
+    Array<float> array1_1({16});
     array1_1.ones();
     array1_1.set_name("array1_1");
     array1_1.print();
@@ -194,7 +194,7 @@ int test_basic_operators(){
 
     std::cout<<std::endl;
 
-    Array<float> array2(4,4);
+    Array<float> array2({4,4});
     array2.zeros();
     array2.print();
 
@@ -211,7 +211,7 @@ int test_basic_operators(){
     array2.print();
     std::cout<<std::endl;
 
-    Array<float> array4(2,2,2,2);
+    Array<float> array4({2,2,2,2});
     array4.ones();
     array4.print();
 
@@ -219,10 +219,10 @@ int test_basic_operators(){
     array4 = array4 - array1;
     array4.print();
 
-    Array<int> ints(10);
+    Array<int> ints({10});
     ints.lin();
     ints.print();
-    Array<float> floats(10);
+    Array<float> floats({10});
     floats = ints;
     floats.print();
     

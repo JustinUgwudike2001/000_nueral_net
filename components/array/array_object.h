@@ -72,25 +72,13 @@ class Array {
         void fill_grad_vec(std::vector<D> _data, std::vector<float> _dots, int size);
 
         Array ones();
-        static Array ones(int shape_0);
-        static Array ones(int shape_0, int shape_1);
-        static Array ones(int shape_0, int shape_1, int shape_2);
-        static Array ones(int shape_0, int shape_1, int shape_2, int shape_3);
+        static Array ones(std::initializer_list<int> dims);
         Array random();
-        static Array random(int shape_0);
-        static Array random(int shape_0, int shape_1);
-        static Array random(int shape_0, int shape_1, int shape_2);
-        static Array random(int shape_0, int shape_1, int shape_2, int shape_3);
+        static Array random(std::initializer_list<int> dims);
         Array zeros();
-        static Array zeros(int shape_0);
-        static Array zeros(int shape_0, int shape_1);
-        static Array zeros(int shape_0, int shape_1, int shape_2);
-        static Array zeros(int shape_0, int shape_1, int shape_2, int shape_3);
+        static Array zeros(std::initializer_list<int> dims);
         Array lin();
-        static Array lin(int shape_0);
-        static Array lin(int shape_0, int shape_1);
-        static Array lin(int shape_0, int shape_1, int shape_2);
-        static Array lin(int shape_0, int shape_1, int shape_2, int shape_3);
+        static Array lin(std::initializer_list<int> dims);
 
 
         void print_grad();
