@@ -35,17 +35,8 @@ class Array {
         //access ops
         D& operator()(std::initializer_list<size_t> idxes);
         void operator()(D value, std::initializer_list<size_t> idxes);
-        D& operator()(std::size_t idx_1, std::size_t idx_2);
-        D& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3);
-        D& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4);
 
-        Array broadcast();
-
-        Array reshape(int shape_0);
-        Array reshape(int shape_0, int shape_1);
-        Array reshape(int shape_0, int shape_1, int shape_2);
-        Array reshape(int shape_0, int shape_1, int shape_2, int shape_3);
-            
+        Array reshape(std::initializer_list<int> dims);
         
         Array permute(int dim1, int dim2);
         Array permute(int dim1, int dim2, int dim3);
