@@ -33,7 +33,8 @@ class Array {
         Array operator/(Array& rhs);
 
         //access ops
-        D& operator()(std::size_t idx_1);
+        D& operator()(std::initializer_list<size_t> idxes);
+        void operator()(D value, std::initializer_list<size_t> idxes);
         D& operator()(std::size_t idx_1, std::size_t idx_2);
         D& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3);
         D& operator()(std::size_t idx_1, std::size_t idx_2, std::size_t idx_3, std::size_t idx_4);
