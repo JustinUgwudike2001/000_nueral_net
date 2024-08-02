@@ -59,7 +59,7 @@ void Array<D>::print_arr2(){
         if (i < num_dims - 1) std::cout<<", ";
     }
 
-    std::cout<<"), rank: "<<this->rank<<", dtype="<<type_info(D)<<" )"<<std::endl;
+    std::cout<<"), rank: "<<this->rank<<", dtype="<<typeid(D).name()<<" )"<<std::endl;
 }
 template <typename D>
 void Array<D>::print_arr3(){
@@ -103,7 +103,7 @@ void Array<D>::print_arr3(){
         if (i < num_dims - 1) std::cout<<", ";
     }
 
-    std::cout<<"), rank:"<<this->rank<<")"<<std::endl;
+    std::cout<<"), rank: "<<this->rank<<", dtype="<<typeid(D).name()<<" )"<<std::endl;
 }
 template <typename D>
 void Array<D>::print_arr4(){
@@ -160,7 +160,7 @@ void Array<D>::print_arr4(){
         if (i < num_dims - 1) std::cout<<", ";
     }
 
-    std::cout<<"), rank:"<<this->rank<<")"<<std::endl;
+    std::cout<<"), rank: "<<this->rank<<", dtype="<<typeid(D).name()<<" )"<<std::endl;
 }
 
 template <typename D>
