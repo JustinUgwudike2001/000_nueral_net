@@ -2,6 +2,6 @@
 
 int main()
 {
-    test_expand();
-    //test_broadcast_to();
+    //test_expand();
+    test_broadcast_to();
 }

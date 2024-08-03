@@ -44,10 +44,7 @@ class Array {
         Array unsqueeze(int dim);
         
         Array expand(std::initializer_list<int> dims);
-
         Array broadcast_to(std::initializer_list<int> dims);
-        Array broadcast_to(int dim1, int dim2, int dim3);
-        Array broadcast_to(int dim1, int dim2, int dim3, int dim4);
 
         void set_name(std::string string);
 
