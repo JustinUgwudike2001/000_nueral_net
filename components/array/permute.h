@@ -27,9 +27,7 @@ Array<D> Array<D>::t(){
 }
 
 template <typename D>
-Array<D> Array<D>::permute(std::initializer_list<int> _dims){
-
-    std::vector<int> dims(_dims);
+Array<D> Array<D>::permute(std::vector<int> dims){
 
     if (this->shape.dims() != dims.size()) {
         printf("Dimension mismatch, input dims: %d not equal to array%d dims", dims.size(), this->rank);

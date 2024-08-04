@@ -2,8 +2,7 @@
 
 
 template <typename D>
-inline D& Array<D>::operator()(std::initializer_list<size_t> _idxes){
-    std::vector<size_t> idxes(_idxes);
+inline D& Array<D>::operator()(std::vector<size_t> idxes){
 
     switch(idxes.size()){
         case 1:
@@ -26,8 +25,8 @@ inline D& Array<D>::operator()(std::initializer_list<size_t> _idxes){
 }
 
 template <typename D>
-inline void Array<D>::operator()(D value, std::initializer_list<size_t> _idxes){
-    std::vector<size_t> idxes(_idxes);
+inline void Array<D>::operator()(D value, std::vector<size_t> idxes){
+
 
     switch(idxes.size()){
         case 1:

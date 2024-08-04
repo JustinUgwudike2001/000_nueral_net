@@ -126,28 +126,28 @@ inline Array<int> Array<int>::lin(){
 }
 
 template <typename D>
-inline Array<D> Array<D>::ones(std::initializer_list<int> dims){
+inline Array<D> Array<D>::ones(std::vector<int> dims){
     Array<D> arr(dims);
     arr.ones();
     return arr;
 }
 
 template <typename D>
-inline Array<D> Array<D>::zeros(std::initializer_list<int> dims){
+inline Array<D> Array<D>::zeros(std::vector<int> dims){
     Array<D> arr(dims);
     arr.zeros();
     return arr;
 }
 
 template <typename D>
-inline Array<D> Array<D>::random(std::initializer_list<int> dims){
+inline Array<D> Array<D>::random(std::vector<int> dims){
     Array<D> arr(dims);
     arr.random();
     return arr;
 }
 
 template <typename D>
-inline Array<D> Array<D>::lin(std::initializer_list<int> dims){
+inline Array<D> Array<D>::lin(std::vector<int> dims){
     Array<D> arr(dims);
     arr.lin();
     return arr;
@@ -155,9 +155,7 @@ inline Array<D> Array<D>::lin(std::initializer_list<int> dims){
 
 
 template <typename D>
-inline Array<D> Array<D>::from_array(std::initializer_list<int> dims, std::initializer_list<D> array){
-    std::vector<D> data(array);
-    std::vector<D> flat_data;
+inline Array<D> Array<D>::from_array(std::vector<int> dims, std::vector<D> array){
     Array<D> arr(dims);
 
     if (arr.shape.size() != array.size()){
@@ -169,7 +167,7 @@ inline Array<D> Array<D>::from_array(std::initializer_list<int> dims, std::initi
     //     flat_data.insert(flat_data.end(), subVector.begin(), subVector.end());
     // }
 
-    arr.fill_vec(data, arr.shape.size());
+    arr.fill_vec(array, arr.shape.size());
     return arr;
 }
 

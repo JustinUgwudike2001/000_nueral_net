@@ -1,9 +1,7 @@
 #include "dot.h"
 
 template <typename D>
-Array<D> Array<D>::expand(std::initializer_list<int> _dims){
-
-    std::vector<int> dims(_dims);
+Array<D> Array<D>::expand(std::vector<int> dims){
     int dim1_repeats; 
     int dim2_repeats;
     int dim3_repeats;
@@ -143,8 +141,7 @@ Array<D> Array<D>::expand(std::initializer_list<int> _dims){
 }
 
 template <typename D>
-Array<D> Array<D>::broadcast_to(std::initializer_list<int> _dims){
-    std::vector<int> dims(_dims);
+Array<D> Array<D>::broadcast_to(std::vector<int> dims){
     Array<D> result;
 
     switch(dims.size()){

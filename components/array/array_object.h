@@ -10,7 +10,7 @@ class Array {
 
         Array();
         Array(Shape shape);
-        Array(std::initializer_list<int> dims);
+        Array(std::vector<int> dims);
 
         //basic ops
         Array operator=(const Array& arr2);
@@ -30,11 +30,11 @@ class Array {
         Array operator/(Array& rhs);
 
         //access ops
-        D& operator()(std::initializer_list<size_t> idxes);
-        void operator()(D value, std::initializer_list<size_t> idxes);
+        D& operator()(std::vector<size_t> idxes);
+        void operator()(D value, std::vector<size_t> idxes);
 
-        Array reshape(std::initializer_list<int> dims);
-        Array permute(std::initializer_list<int> dims);
+        Array reshape(std::vector<int> dims);
+        Array permute(std::vector<int> dims);
         Array t();
         Array dot(Array& rhs);
 
@@ -43,8 +43,8 @@ class Array {
         Array squeeze(int dim);
         Array unsqueeze(int dim);
         
-        Array expand(std::initializer_list<int> dims);
-        Array broadcast_to(std::initializer_list<int> dims);
+        Array expand(std::vector<int> dims);
+        Array broadcast_to(std::vector<int> dims);
 
         void set_name(std::string string);
 
@@ -57,11 +57,11 @@ class Array {
         Array zeros();
         Array lin();
 
-        static Array zeros(std::initializer_list<int> dims);
-        static Array random(std::initializer_list<int> dims);
-        static Array ones(std::initializer_list<int> dims);
-        static Array lin(std::initializer_list<int> dims);
-        static Array from_array(std::initializer_list<int> dims, std::initializer_list<D> array);
+        static Array zeros(std::vector<int> dims);
+        static Array random(std::vector<int> dims);
+        static Array ones(std::vector<int> dims);
+        static Array lin(std::vector<int> dims);
+        static Array from_array(std::vector<int> dims, std::vector<D> array);
 
         void print_grad();
         void print();

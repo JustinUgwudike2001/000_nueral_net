@@ -1,9 +1,8 @@
 #include "access_operators.h"
 
 template <typename D>
-Array<D> Array<D>::reshape(std::initializer_list<int> _dims){
+Array<D> Array<D>::reshape(std::vector<int> dims){
 
-    std::vector<int> dims(_dims);
     Shape shape(dims, dims.size());
 
     if (this->shape.size() != shape.size()) {
@@ -17,51 +16,6 @@ Array<D> Array<D>::reshape(std::initializer_list<int> _dims){
     
     return *this;
 }
-
-// Array Array::reshape(int shape_0, int shape_1){
-//     Shape shape({shape_0, shape_1}, 2);
-
-//     if (this->shape.size() != shape.size()) {
-//         std::cout << "Shape size not equal";
-//         exit(0);
-//     }
-
-//     this->shape = shape;
-//     this->rank = 2;
-//     strcpy(this->name, "array2");
-    
-//     return *this;
-// }
-
-// Array Array::reshape(int shape_0, int shape_1, int shape_2){
-//     Shape shape({shape_0, shape_1, shape_2}, 3);
-
-//     if (this->shape.size() != shape.size()) {
-//         std::cout << "Shape size not equal";
-//         exit(0);
-//     }
-
-//     this->shape = shape;
-//     this->rank = 3;
-//     strcpy(this->name, "array3");
-
-//     return *this;
-// }
-
-// Array Array::reshape(int shape_0, int shape_1, int shape_2, int shape_3){
-//     Shape shape({shape_0, shape_1, shape_2, shape_3}, 4);
-
-//     if (this->shape.size() != shape.size()) {
-//         std::cout << "Shape size not equal";
-//         exit(0);
-//     }
-
-//     this->shape = shape;
-//     this->rank = 4;
-//     strcpy(this->name, "array4");
-
-//     return *this;
-// }
 
 int test_reshape(){
         

@@ -15,9 +15,8 @@ Array<D>::Array(Shape s){
 }
 
 template<typename D>
-Array<D>::Array(std::initializer_list<int> dims){
-    std::vector<int> shape(dims);
-    Shape s(shape, dims.size());
+Array<D>::Array(std::vector<int> dims){
+    Shape s(dims, dims.size());
     this->shape = s;
     this->rank = dims.size();
     strcpy(this->name, "array");
