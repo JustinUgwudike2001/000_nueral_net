@@ -10,7 +10,7 @@ inline void Array<D>::fill_arr(D _data[], int size)
     for (int i = 0; i < size; i++)
     {
         data[i] = _data[i];
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<D>>(_data[i]);
     }
 
     // for(int i = 0; i < remainder; i++){
@@ -29,7 +29,7 @@ inline void Array<D>::fill_vec(std::vector<D> _data, int size)
     for (int i = 0; i < size; i++)
     {
         data[i] = _data[i];
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<D>>(_data[i]);
     }
 
     // for(int i = 0; i < remainder; i++){
@@ -39,9 +39,9 @@ inline void Array<D>::fill_vec(std::vector<D> _data, int size)
 }
 
 template <typename D>
-inline void Array<D>::fill_grad_vec(std::vector<D> _data, std::vector<float> _dots, int size)
+inline void Array<D>::fill_grad_vec(std::vector<D> _data, std::vector<std::shared_ptr<Node<D>>> _nodes, int size)
 {
-    if (data.size() != dots.size())
+    if (_data.size() != _nodes.size())
     {
         std::cout << "Data and gradient vectors mus be the same size";
         exit(0);
@@ -53,7 +53,7 @@ inline void Array<D>::fill_grad_vec(std::vector<D> _data, std::vector<float> _do
     for (int i = 0; i < size; i++)
     {
         data[i] = _data[i];
-        dots[i] = _dots[i];
+        nodes[i] = _nodes[i];
     }
 
     // for(int i = 0; i < remainder; i++){
@@ -68,7 +68,8 @@ inline Array<float> Array<float>::ones()
     for (int i = 0; i < this->shape.size(); i++)
     {
         data[i] = float(1.);
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<float>>(data[i]);
+
     }
 
     return *this;
@@ -79,7 +80,7 @@ inline Array<int> Array<int>::ones()
     for (int i = 0; i < this->shape.size(); i++)
     {
         data[i] = int(1);
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<int>>(data[i]);
     }
 
     return *this;
@@ -90,7 +91,7 @@ inline Array<float> Array<float>::random()
     for (int i = 0; i < this->shape.size(); i++)
     {
         data[i] = float((std::rand() % 1000) + 1) / 1000;
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<float>>(data[i]);
     }
 
     return *this;
@@ -101,7 +102,7 @@ inline Array<int> Array<int>::random()
     for (int i = 0; i < this->shape.size(); i++)
     {
         data[i] = int((std::rand() % 1000) + 1);
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<int>>(data[i]);
     }
 
     return *this;
@@ -112,7 +113,7 @@ inline Array<float> Array<float>::zeros()
     for (int i = 0; i < this->shape.size(); i++)
     {
         data[i] = float(0.);
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<float>>(data[i]);
     }
 
     return *this;
@@ -123,7 +124,7 @@ inline Array<int> Array<int>::zeros()
     for (int i = 0; i < this->shape.size(); i++)
     {
         data[i] = int(0);
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<int>>(data[i]);
     }
 
     return *this;
@@ -133,8 +134,8 @@ inline Array<float> Array<float>::lin()
 {
     for (int i = 0; i < this->shape.size(); i++)
     {
-        data[i] = float(i);
-        dots[i] = 1.;
+        data[i] = float(i + 1.);
+        nodes[i] = std::make_shared<Node<float>>(data[i]);
     }
 
     return *this;
@@ -145,7 +146,7 @@ inline Array<int> Array<int>::lin()
     for (int i = 0; i < this->shape.size(); i++)
     {
         data[i] = int(i);
-        dots[i] = 1.;
+        nodes[i] = std::make_shared<Node<int>>(data[i]);
     }
 
     return *this;

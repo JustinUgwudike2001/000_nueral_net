@@ -8,9 +8,10 @@ inline Array<D> Array<D>::operator=(const Array &arr2)
         return *this;
 
     this->data = arr2.data;
-    this->dots = arr2.dots;
     this->shape = arr2.shape;
     this->rank = arr2.rank;
+    this->nodes = arr2.nodes;
+    //this->tape = arr2.tape;
     // strcpy(arr2.name, this->name);
 
     return *this;
@@ -41,12 +42,28 @@ template <typename D>
 Array<D> Array<D>::operator+(D rhs)
 {
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] + rhs;
-        arr.dots[i] = this->dots[i] + rhs;
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], newNode]() {
+            node1->gradient += 1.0 * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+
+    // arr->tape = this->tape;
+    // arr->tape.add_operation(4, this, NULL, arr, rhs);
 
     return arr;
 }
@@ -54,12 +71,27 @@ template <typename D>
 Array<D> Array<D>::operator-(D rhs)
 {
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] - rhs;
-        arr.dots[i] = this->dots[i] - rhs;
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], newNode]() {
+            node1->gradient += 1.0 * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+    // arr->tape = this->tape;
+    // arr->tape.add_operation(5, this, NULL, arr, rhs);
 
     return arr;
 }
@@ -67,12 +99,27 @@ template <typename D>
 Array<D> Array<D>::operator/(D rhs)
 {
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] / rhs;
-        arr.dots[i] = this->dots[i] / rhs;
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], rhs, newNode]() {
+            node1->gradient += (1.0 / rhs) * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+    // arr->tape = this->tape;
+    // arr->tape.add_operation(6, this, NULL, arr, rhs);
 
     return arr;
 }
@@ -80,12 +127,27 @@ template <typename D>
 Array<D> Array<D>::operator*(D rhs)
 {
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] * rhs;
-        arr.dots[i] = this->dots[i] * rhs;
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], rhs, newNode]() {
+            node1->gradient += rhs * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+    // arr->tape = this->tape;
+    // arr->tape.add_operation(7, this, NULL, arr, rhs);
 
     return arr;
 }
@@ -93,15 +155,31 @@ template <typename D>
 Array<D> Array<D>::operator^(D rhs)
 {
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = std::pow(this->data[i], rhs);
-        arr.dots[i] = rhs * this->dots[i] * std::pow(this->data[i], rhs - 1);
+        
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], rhs, newNode]() {
+            node1->gradient += rhs * std::pow(node1->value, rhs - 1) * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+    // arr->tape = this->tape;
+    // arr->tape.add_operation(8, this, NULL, arr, rhs);
 
     return arr;
 }
+
 template <typename D>
 Array<D> Array<D>::operator+(Array &rhs)
 {
@@ -113,13 +191,30 @@ Array<D> Array<D>::operator+(Array &rhs)
     }
 
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] + rhs.data[i];
-        arr.dots[i] = this->dots[i] + rhs.dots[i];
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+        newNode->addInput(rhs.nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+            node1->gradient += 1.0 * newNode->gradient;
+            node2->gradient += 1.0 * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
 
+    arr.nodes = resultNodes;
+    //arr->tape = this->tape;
+    //arr->tape.add_operation(0, this, &rhs, arr, 0);
+    
     return arr;
 }
 template <typename D>
@@ -133,12 +228,29 @@ Array<D> Array<D>::operator-(Array &rhs)
     }
 
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] - rhs.data[i];
-        arr.dots[i] = this->dots[i] - rhs.dots[i];
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+        newNode->addInput(rhs.nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+            node1->gradient += 1.0 * newNode->gradient;
+            node2->gradient -= 1.0 * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+    // arr->tape = this->tape;
+    // arr->tape.add_operation(1, this, &rhs, arr, 0);
 
     return arr;
 }
@@ -153,12 +265,29 @@ Array<D> Array<D>::operator/(Array &rhs)
     }
 
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] / rhs.data[i];
-        arr.dots[i] = (this->dots[i] * rhs.data[i] - this->data[i] * rhs.dots[i]) / (rhs.data[i] * rhs.data[i]);
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+        newNode->addInput(rhs.nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+            node1->gradient += (1.0 / node2->value) * newNode->gradient;  
+            node2->gradient -= (node1->value / (node2->value * node2->value)) * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+    //arr->tape = this->tape;
+    //arr->tape.add_operation(3, this, &rhs, arr, 0);
 
     return arr;
 }
@@ -173,12 +302,29 @@ Array<D> Array<D>::operator*(Array &rhs)
     }
 
     Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
         arr.data[i] = this->data[i] * rhs.data[i];
-        arr.dots[i] = (this->data[i] * rhs.dots[i]) + (this->dots[i] * rhs.data[i]);
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+        newNode->addInput(rhs.nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+            node1->gradient += node2->value * newNode->gradient;
+            node2->gradient += node1->value * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
     }
+
+    arr.nodes = resultNodes;
+    //arr->tape = this->tape;
+    //arr->tape.add_operation(2, this, &rhs, arr, 0);
 
     return arr;
 }

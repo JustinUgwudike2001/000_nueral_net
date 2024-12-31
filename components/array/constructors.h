@@ -10,11 +10,12 @@ Array<D>::Array(Shape s)
 {
     this->shape = s;
     this->rank = s.dims();
+    //this->tape = Tape();
     strcpy(this->name, "array");
 
     this->data = std::vector<D>(this->shape.size());
-    this->dots = std::vector<float>(this->shape.size(), 0.);
-}
+    this->nodes = std::vector<std::shared_ptr<Node<D>>>(this->shape.size());
+    }
 
 template <typename D>
 Array<D>::Array(std::vector<int> dims)
@@ -22,10 +23,11 @@ Array<D>::Array(std::vector<int> dims)
     Shape s(dims, dims.size());
     this->shape = s;
     this->rank = dims.size();
+    //this->tape = Tape();
     strcpy(this->name, "array");
 
     this->data = std::vector<D>(this->shape.size());
-    this->dots = std::vector<float>(this->shape.size(), 0.);
+    this->nodes = std::vector<std::shared_ptr<Node<D>>>(this->shape.size());
 }
 
 // template<typename D>

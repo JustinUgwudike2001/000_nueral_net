@@ -41,7 +41,7 @@ Array<D> Array<D>::permute(std::vector<int> dims)
     Array arr = *this;
 
     std::vector<D> new_data(arr.shape.size());
-    std::vector<float> new_dots(arr.shape.size(), 0.);
+    std::vector<std::shared_ptr<Node<D>>> new_dots(arr.shape.size());
 
     int count = 0;
 
@@ -54,7 +54,7 @@ Array<D> Array<D>::permute(std::vector<int> dims)
             for (int i = 0; i < arr.shape.shape()[dims[1]]; i++)
             {
                 new_data[count] = arr.data[j * arr.shape.strides()[dims[0]] + i * arr.shape.strides()[dims[1]]];
-                new_dots[count] = arr.dots[j * arr.shape.strides()[dims[0]] + i * arr.shape.strides()[dims[1]]];
+                new_dots[count] = arr.nodes[j * arr.shape.strides()[dims[0]] + i * arr.shape.strides()[dims[1]]];
                 count += 1;
             }
         }
@@ -67,7 +67,7 @@ Array<D> Array<D>::permute(std::vector<int> dims)
                 for (int i = 0; i < arr.shape.shape()[dims[2]]; i++)
                 {
                     new_data[count] = arr.data[k * arr.shape.strides()[dims[0]] + j * arr.shape.strides()[dims[1]] + i * arr.shape.strides()[dims[2]]];
-                    new_dots[count] = arr.dots[k * arr.shape.strides()[dims[0]] + j * arr.shape.strides()[dims[1]] + i * arr.shape.strides()[dims[2]]];
+                    new_dots[count] = arr.nodes[k * arr.shape.strides()[dims[0]] + j * arr.shape.strides()[dims[1]] + i * arr.shape.strides()[dims[2]]];
                     count += 1;
                 }
             }
@@ -83,7 +83,7 @@ Array<D> Array<D>::permute(std::vector<int> dims)
                     for (int i = 0; i < arr.shape.shape()[dims[3]]; i++)
                     {
                         new_data[count] = arr.data[l * arr.shape.strides()[dims[0]] + k * arr.shape.strides()[dims[1]] + j * arr.shape.strides()[dims[2]] + i * arr.shape.strides()[dims[3]]];
-                        new_dots[count] = arr.dots[l * arr.shape.strides()[dims[0]] + k * arr.shape.strides()[dims[1]] + j * arr.shape.strides()[dims[2]] + i * arr.shape.strides()[dims[3]]];
+                        new_dots[count] = arr.nodes[l * arr.shape.strides()[dims[0]] + k * arr.shape.strides()[dims[1]] + j * arr.shape.strides()[dims[2]] + i * arr.shape.strides()[dims[3]]];
                         count += 1;
                     }
                 }
@@ -97,7 +97,7 @@ Array<D> Array<D>::permute(std::vector<int> dims)
     arr.shape.permute(dims);
 
     arr.data = new_data;
-    arr.dots = new_dots;
+    arr.nodes = new_dots;
 
     return arr;
 }

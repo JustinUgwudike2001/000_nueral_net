@@ -11,7 +11,7 @@ std::vector<Array<D>> Array<D>::split(int dim)
 
     std::vector<Array> arrays;
     std::vector<D> data(elem_size, 0.);
-    std::vector<float> dots(elem_size, 0.);
+    std::vector<std::shared_ptr<Node<D>>> dots(elem_size);
 
     Array<D> ref = *this;
 
@@ -67,9 +67,9 @@ std::vector<Array<D>> Array<D>::split(int dim)
         for (int i = 0; i < elem_size; i++)
         {
             data[i] = ref.data[strides[0] * j + i];
-            dots[i] = ref.dots[strides[0] * j + i];
+            nodes[i] = ref.nodes[strides[0] * j + i];
         }
-        elem_array.fill_grad_vec(data, dots, elem_size);
+        elem_array.fill_grad_vec(data, nodes, elem_size);
         arrays.push_back(elem_array);
     }
 
@@ -93,16 +93,16 @@ Array<D> stack(std::vector<Array<D>> arrays, int dim)
     std::vector<int> strides = stacked_array.get_shape().strides();
 
     std::vector<D> stacked_data(total_d_size);
-    std::vector<float> stacked_dots(total_d_size, 0.);
+    std::vector<std::shared_ptr<Node<D>>> stacked_dots(total_d_size);
 
     for (int j = 0; j < size; j++)
     {
         std::vector<D> data = arrays[j].get_data();
-        std::vector<float> dots = arrays[j].get_grad();
+        std::vector<std::shared_ptr<Node<D>>> nodes = arrays[j].get_grad();
         for (int i = 0; i < array_size; i++)
         {
             stacked_data[strides[0] * j + i] = data[i];
-            stacked_dots[strides[0] * j + i] = dots[i];
+            stacked_dots[strides[0] * j + i] = nodes[i];
         }
     }
 

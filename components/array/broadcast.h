@@ -51,7 +51,7 @@ Array<D> Array<D>::expand(std::vector<int> dims)
             for (int i = 0; i < this->shape.shape()[1] * dim2_repeats; i++)
             {
                 result.data[count] = this->data[(j % this->shape.shape()[0]) * this->shape.strides()[0] + i % this->shape.shape()[1]];
-                result.dots[count] = this->dots[(j % this->shape.shape()[0]) * this->shape.strides()[0] + i % this->shape.shape()[1]];
+                result.nodes[count] = this->nodes[(j % this->shape.shape()[0]) * this->shape.strides()[0] + i % this->shape.shape()[1]];
                 count += 1;
             }
         }
@@ -91,7 +91,7 @@ Array<D> Array<D>::expand(std::vector<int> dims)
                 for (int i = 0; i < this->shape.shape()[2] * dim3_repeats; i++)
                 {
                     result.data[count] = this->data[(k % this->shape.shape()[0]) * this->shape.strides()[0] + (j % this->shape.shape()[1]) * this->shape.strides()[1] + i % this->shape.shape()[2]];
-                    result.dots[count] = this->dots[(k % this->shape.shape()[0]) * this->shape.strides()[0] + (j % this->shape.shape()[1]) * this->shape.strides()[1] + i % this->shape.shape()[2]];
+                    result.nodes[count] = this->nodes[(k % this->shape.shape()[0]) * this->shape.strides()[0] + (j % this->shape.shape()[1]) * this->shape.strides()[1] + i % this->shape.shape()[2]];
                     count += 1;
                 }
             }
@@ -143,7 +143,7 @@ Array<D> Array<D>::expand(std::vector<int> dims)
                     for (int i = 0; i < this->shape.shape()[3] * dim4_repeats; i++)
                     {
                         result.data[count] = this->data[(l % this->shape.shape()[0]) * this->shape.strides()[0] + (k % this->shape.shape()[1]) * this->shape.strides()[1] + (j % this->shape.shape()[2]) * this->shape.strides()[2] + i % this->shape.shape()[3]];
-                        result.dots[count] = this->dots[(l % this->shape.shape()[0]) * this->shape.strides()[0] + (k % this->shape.shape()[1]) * this->shape.strides()[1] + (j % this->shape.shape()[2]) * this->shape.strides()[2] + i % this->shape.shape()[3]];
+                        result.nodes[count] = this->nodes[(l % this->shape.shape()[0]) * this->shape.strides()[0] + (k % this->shape.shape()[1]) * this->shape.strides()[1] + (j % this->shape.shape()[2]) * this->shape.strides()[2] + i % this->shape.shape()[3]];
                         count += 1;
                     }
                 }
@@ -306,7 +306,7 @@ Array<D> Array<D>::broadcast_to(std::vector<int> dims)
     for (int i = 0; i < result.shape.size(); i++)
     {
         result.data[i] = this->data[i % this->shape.size()];
-        result.dots[i] = this->data[i % this->shape.size()];
+        result.nodes[i] = this->nodes[i % this->shape.size()];
     }
 
     strcpy(result.name, this->name);

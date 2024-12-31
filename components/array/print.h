@@ -24,6 +24,11 @@ void Array<D>::print()
     }
 }
 
+// template <typename D>
+// void Array<D>::print_tape(){
+//     this->tape.print();
+// }
+
 template <typename D>
 void Array<D>::print_arr2()
 {
@@ -217,9 +222,8 @@ void Array<D>::print_grad()
 
     for (int i = 0; i < this->shape.size(); i++)
     {
-        std::cout << this->dots[i];
-        if (i < this->shape.size() - 1)
-            std::cout << ", ";
+        std::cout << this->nodes[i]->gradient;
+        if (i < this->shape.size() - 1) std::cout << ", ";
     }
 
     std::cout << "}, ";
