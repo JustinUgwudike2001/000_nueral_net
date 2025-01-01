@@ -1,4 +1,4 @@
-#include "../broadcast.h"
+#include "../mean.h"
 
 int main()
 {
@@ -9,7 +9,7 @@ int main()
 
     Array<float> arr2({5});
     arr2.set_name("arr2");
-    arr2.lin();
+    arr2.random();
 
     Array<float> arr3;
     arr3.set_name("arr3");
@@ -28,10 +28,10 @@ int main()
     arr3 = arr3 * 4.2;
     arr3 = arr3 ^ 3;
 
+    // add dot product auto grad
+
     arr3.print();
     arr3.print_grad();
-    //arr1.print_grad();
-    //arr2.print_grad();
 
     printf("__________________________\n");
     arr3.backward();
