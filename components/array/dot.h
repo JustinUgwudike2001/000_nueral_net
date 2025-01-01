@@ -286,13 +286,12 @@ Array<D> Array<D>::try_dot(Array<D> &lhs, Array<D> &rhs)
             }
 
             // Define backward function
-            newNode->backward = [newNode, thisNodes = lhs.nodes, rhsNodes = rhs.nodes, k, j, sum_dim, thisStride = lhs.shape.strides()[0], rhsStride = rhs.shape.strides()[0]]() {
+            newNode->backward = [newNode, lhsNodes = lhs.nodes, rhsNodes = rhs.nodes, k, j, sum_dim, lhsStride = lhs.shape.strides()[0], rhsStride = rhs.shape.strides()[0]]() {
                 for (int i = 0; i < sum_dim; ++i) {
                     // Gradient for LHS
-                    thisNodes[k * thisStride + i]->gradient += rhsNodes[i * rhsStride + j]->value * newNode->gradient;
-
+                    lhsNodes[k * lhsStride + i]->gradient += rhsNodes[i * rhsStride + j]->value * newNode->gradient;
                     // Gradient for RHS
-                    rhsNodes[i * rhsStride + j]->gradient += thisNodes[k * thisStride + i]->value * newNode->gradient;
+                    rhsNodes[i * rhsStride + j]->gradient += lhsNodes[k * lhsStride + i]->value * newNode->gradient;
                 }
             };
 
