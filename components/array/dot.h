@@ -47,20 +47,17 @@ Array<D> Array<D>::try_dot_arr1(Array<D> &rhs)
         break;
     case 3:
         // arr1.arr3
-        printf("here1\n");
         dim1 = rhs.shape.shape()[1];
         dim2 = rhs.shape.shape()[2];
-        printf("here2\n");
+
         _rhs = rhs;
-        printf("here3\n");
         _rhs.reshape({rhs.shape.shape()[0], dim1 * dim2});
-        printf("here5\n");
+
         result = this->try_dot(*this, _rhs);
-        printf("here5\n");
         result = result.reshape({this->get_shape().shape()[0], dim1, dim2});
-        printf("here6\n");
+
         result = result.squeeze(0);
-        printf("here7\n");
+
         break;
     case 4:
         // arr1.arr4
@@ -278,10 +275,33 @@ Array<D> Array<D>::try_dot(Array<D> &lhs, Array<D> &rhs)
                 sum += lhs.data[k * lhs.shape.strides()[0] + i] * rhs.data[j + i * rhs.shape.strides()[0]];
             }
             data[k * dim_y + j] = sum;
+       
+            // Create a node for the dot product element
+            std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(sum);
+
+            // Add dependencies for gradient propagation
+            for (int i = 0; i < sum_dim; ++i) {
+                newNode->addInput(lhs.nodes[k * lhs.shape.strides()[0] + i]);
+                newNode->addInput(rhs.nodes[i * rhs.shape.strides()[0] + j]);
+            }
+
+            // Define backward function
+            newNode->backward = [newNode, thisNodes = lhs.nodes, rhsNodes = rhs.nodes, k, j, sum_dim, thisStride = lhs.shape.strides()[0], rhsStride = rhs.shape.strides()[0]]() {
+                for (int i = 0; i < sum_dim; ++i) {
+                    // Gradient for LHS
+                    thisNodes[k * thisStride + i]->gradient += rhsNodes[i * rhsStride + j]->value * newNode->gradient;
+
+                    // Gradient for RHS
+                    rhsNodes[i * rhsStride + j]->gradient += thisNodes[k * thisStride + i]->value * newNode->gradient;
+                }
+            };
+
+            resultNodes.push_back(newNode);
         }
     }
 
     result.fill_vec(data, dim_x * dim_y);
+    result.nodes = resultNodes;
 
     return result;
 }

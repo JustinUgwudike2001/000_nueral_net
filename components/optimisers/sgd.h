@@ -55,7 +55,7 @@ int test_sgd(){
 
         printf("\niteration %d:=========================================\n", i);
 
-        predictions = (inputs / weights) - biases;
+        predictions = inputs * weights + biases;
         predictions.print();
         labels.print();
 
@@ -70,6 +70,49 @@ int test_sgd(){
         biases.print();
     }
 
+    return 0;
+}
+
+int test_sgd_dot(){
+
+    Array<float> weights({5, 3});
+    weights.set_name("weights");
+    Array<float> biases({3});
+    biases.set_name("bias");
+    
+    weights.random();
+    biases.ones();
+
+    Array<float> inputs = Array<float>::from_array({5}, {1.,1.,1.,1.,1.});
+    Array<float> labels = Array<float>::from_array({3}, {1.,0.,1.});
+    labels.set_name("labels");
+
+    std::vector<Array<float>*> params = {&weights, &biases};
+
+    MSELoss loss_fn = MSELoss();
+    SGD<float> optimiser(params, 0.09);
+
+    Array<float> predictions;
+    predictions.set_name("pds");
+
+    for(int i = 0; i < 20; i++){
+
+        printf("\niteration %d:=========================================\n", i);
+
+        predictions = inputs.dot(weights) + biases;
+        predictions.print();
+        labels.print();
+
+        Array<float> loss = loss_fn.forward(predictions, labels);
+        loss_fn.print();
+
+        loss.backward();
+
+        optimiser.step();
+
+        weights.print();
+        biases.print();
+    }
 
     return 0;
 }

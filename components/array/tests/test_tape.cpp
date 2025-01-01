@@ -27,6 +27,7 @@ int main()
     arr3 = arr3 / 10;
     arr3 = arr3 * 4.2;
     arr3 = arr3 ^ 3;
+    arr3 = arr3.dot(arr1.t());
 
     // add dot product auto grad
 

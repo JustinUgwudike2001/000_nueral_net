@@ -2,5 +2,6 @@
 
 int main()
 {
-    test_sgd();
+    //stest_sgd();
+    test_sgd_dot();
 }
