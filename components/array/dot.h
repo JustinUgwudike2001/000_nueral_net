@@ -265,12 +265,14 @@ Array<D> Array<D>::try_dot(Array<D> &lhs, Array<D> &rhs)
 
     std::vector<D> data(dim_x * dim_y);
     Array<D> result({dim_x, dim_y});
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
+
 
     for (int k = 0; k < dim_x; k++)
     {
         for (int j = 0; j < dim_y; j++)
         {
-            int sum = 0;
+            D sum = 0;
             for (int i = 0; i < sum_dim; i++)
             {
                 sum += lhs.data[k * lhs.shape.strides()[0] + i] * rhs.data[j + i * rhs.shape.strides()[0]];
