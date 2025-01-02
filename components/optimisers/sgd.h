@@ -75,22 +75,22 @@ int test_sgd(){
 
 int test_sgd_dot(){
 
-    Array<float> weights({5, 3});
+    Array<float> weights({5, 6});
     weights.set_name("weights");
-    Array<float> biases({3});
+    Array<float> biases({6});
     biases.set_name("bias");
     
     weights.random();
     biases.ones();
 
     Array<float> inputs = Array<float>::from_array({5}, {1.,1.,1.,1.,1.});
-    Array<float> labels = Array<float>::from_array({3}, {1.,0.,1.});
+    Array<float> labels = Array<float>::from_array({6}, {0.,0.,0.,1.,1.,1.,});
     labels.set_name("labels");
 
     std::vector<Array<float>*> params = {&weights, &biases};
 
     MSELoss loss_fn = MSELoss();
-    SGD<float> optimiser(params, 0.09);
+    SGD<float> optimiser(params, 0.05);
 
     Array<float> predictions;
     predictions.set_name("pds");
@@ -99,7 +99,7 @@ int test_sgd_dot(){
 
         printf("\niteration %d:=========================================\n", i);
 
-        predictions = inputs.dot(weights) + biases;
+        predictions = inputs.dot(weights)  + biases;
         predictions.print();
         labels.print();
 
