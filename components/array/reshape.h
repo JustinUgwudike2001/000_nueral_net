@@ -1,4 +1,4 @@
-#include "access_operators.h"
+#include "array_functions.h"
 
 template <typename D>
 Array<D> Array<D>::reshape(std::vector<int> dims)

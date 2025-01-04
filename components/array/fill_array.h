@@ -134,7 +134,7 @@ inline Array<float> Array<float>::lin()
 {
     for (int i = 0; i < this->shape.size(); i++)
     {
-        data[i] = float(i + 1.);
+        data[i] = float(i);
         nodes[i] = std::make_shared<Node<float>>(data[i]);
     }
 
@@ -194,10 +194,6 @@ inline Array<D> Array<D>::from_array(std::vector<int> dims, std::vector<D> array
         printf("The size: %d of the array does not match the size of the array: %d.", arr.shape.size(), array.size());
         exit(0);
     }
-
-    // for (const auto& subVector : data) {
-    //     flat_data.insert(flat_data.end(), subVector.begin(), subVector.end());
-    // }
 
     arr.fill_vec(array, arr.shape.size());
     return arr;

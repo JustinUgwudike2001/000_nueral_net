@@ -30,65 +30,6 @@ Array<D>::Array(std::vector<int> dims)
     this->nodes = std::vector<std::shared_ptr<Node<D>>>(this->shape.size());
 }
 
-// template<typename D>
-// Array<D>::Array(int _shape){
-//     Shape s({_shape}, 1);
-//     this->shape = s;
-//     this->rank = 1;
-//     strcpy(this->name, "array1");
-
-//     this->data = std::vector<D>(this->shape.size());
-//     this->dots = std::vector<float>(this->shape.size(), 0.);
-// }
-// template<typename D>
-// Array<D>::Array(int _shape_0, int _shape_1){
-//     Shape s({_shape_0, _shape_1}, 2);
-//     this->shape = s;
-//     this->rank = 2;
-//     strcpy(this->name, "array2");
-
-//     this->data = std::vector<D>(this->shape.size());
-//     this->dots = std::vector<float>(this->shape.size(), 0.);
-// }
-// template<typename D>
-// Array<D>::Array(int _shape_0, int _shape_1, int _shape_2){
-//     Shape s({_shape_0, _shape_1, _shape_2}, 3);
-//     this->shape = s;
-//     this->rank = 3;
-//     strcpy(this->name, "array3");
-
-//     this->data = std::vector<D>(this->shape.size());
-//     this->dots = std::vector<float>(this->shape.size(), 0.);
-// }
-// template<typename D>
-// Array<D>::Array(int _shape_0, int _shape_1, int _shape_2, int _shape_3){
-//     Shape s({_shape_0, _shape_1, _shape_2, _shape_3}, 4);
-//     this->shape = s;
-//     this->rank = 4;
-//     strcpy(this->name, "array4");
-
-//     this->data = std::vector<D>(this->shape.size());
-//     this->dots = std::vector<float>(this->shape.size(), 0.);
-// }
-
-// template<typename D>
-// inline Array<D> Array<D>::create_arr(){
-//     std::vector<int> shape = this->get_shape().shape();
-
-//     switch(this->rank){
-//         case 1:
-//             return Array<D>({this->shape.size()});
-//         case 2:
-//             return Array<D>({shape[0],shape[1]);
-//         case 3:
-//             return Array<D>(shape[0], shape[1], shape[2]);
-//         case 4:
-//             return Array<D>(shape[0], shape[1], shape[2], shape[3]);
-//         default:
-//             return Array<D>(this->shape.size());
-//     }
-// }
-
 int test_constructors()
 {
 

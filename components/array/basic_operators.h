@@ -61,10 +61,6 @@ Array<D> Array<D>::operator+(D rhs)
     }
 
     arr.nodes = resultNodes;
-
-    // arr->tape = this->tape;
-    // arr->tape.add_operation(4, this, NULL, arr, rhs);
-
     return arr;
 }
 template <typename D>
@@ -90,9 +86,6 @@ Array<D> Array<D>::operator-(D rhs)
     }
 
     arr.nodes = resultNodes;
-    // arr->tape = this->tape;
-    // arr->tape.add_operation(5, this, NULL, arr, rhs);
-
     return arr;
 }
 template <typename D>
@@ -118,9 +111,6 @@ Array<D> Array<D>::operator/(D rhs)
     }
 
     arr.nodes = resultNodes;
-    // arr->tape = this->tape;
-    // arr->tape.add_operation(6, this, NULL, arr, rhs);
-
     return arr;
 }
 template <typename D>
@@ -146,9 +136,6 @@ Array<D> Array<D>::operator*(D rhs)
     }
 
     arr.nodes = resultNodes;
-    // arr->tape = this->tape;
-    // arr->tape.add_operation(7, this, NULL, arr, rhs);
-
     return arr;
 }
 template <typename D>
@@ -174,9 +161,6 @@ Array<D> Array<D>::operator^(D rhs)
     }
 
     arr.nodes = resultNodes;
-    // arr->tape = this->tape;
-    // arr->tape.add_operation(8, this, NULL, arr, rhs);
-
     return arr;
 }
 
@@ -212,9 +196,6 @@ Array<D> Array<D>::operator+(Array &rhs)
     }
 
     arr.nodes = resultNodes;
-    //arr->tape = this->tape;
-    //arr->tape.add_operation(0, this, &rhs, arr, 0);
-    
     return arr;
 }
 template <typename D>
@@ -249,9 +230,6 @@ Array<D> Array<D>::operator-(Array &rhs)
     }
 
     arr.nodes = resultNodes;
-    // arr->tape = this->tape;
-    // arr->tape.add_operation(1, this, &rhs, arr, 0);
-
     return arr;
 }
 template <typename D>
@@ -286,9 +264,6 @@ Array<D> Array<D>::operator/(Array &rhs)
     }
 
     arr.nodes = resultNodes;
-    //arr->tape = this->tape;
-    //arr->tape.add_operation(3, this, &rhs, arr, 0);
-
     return arr;
 }
 template <typename D>
@@ -323,9 +298,33 @@ Array<D> Array<D>::operator*(Array &rhs)
     }
 
     arr.nodes = resultNodes;
-    //arr->tape = this->tape;
-    //arr->tape.add_operation(2, this, &rhs, arr, 0);
+    return arr;
+}
+template <typename D>
+Array<D> Array<D>::operator^(Array<D> &rhs)
+{
+    Array<D> arr = Array<D>(this->shape);
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
+    for (int i = 0; i < this->shape.size(); i++)
+    {
+        arr.data[i] = std::pow(this->data[i], rhs.data[i]);
+        
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
+        newNode->addInput(nodes[i]);
+        newNode->addInput(rhs.nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+            node1->gradient += (node2->value * std::pow(node1->value, node2->value - 1)) * newNode->gradient; // ∂(a^b)/∂a
+            node2->gradient += (std::log(node1->value) * newNode->value) * newNode->gradient; // ∂(a^b)/∂b
+        };
+
+        resultNodes.push_back(newNode);
+    }
+
+    arr.nodes = resultNodes;
     return arr;
 }
 

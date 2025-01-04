@@ -23,11 +23,18 @@ public:
     Array operator*(D rhs);
     Array operator^(D rhs);
 
+    // Array operator+(D lhs, const Array& rhs);
+    // Array operator-(D lhs, const Array& rhs);
+    // Array operator*(D lhs, const Array& rhs);
+    // Array operator/(D lhs, const Array& rhs);
+
+
     // array ops
     Array operator+(Array &rhs);
     Array operator-(Array &rhs);
     Array operator*(Array &rhs);
     Array operator/(Array &rhs);
+    Array operator^(Array &rhs);
 
     // access ops
     D &operator()(std::vector<size_t> idxes);
@@ -68,7 +75,6 @@ public:
     static Array from_array(std::vector<int> dims, std::vector<D> array);
 
     void print_grad();
-    void print_tape();
     void print();
 
     inline Shape get_shape()
@@ -126,3 +132,4 @@ void Array<D>::set_name(std::string string)
 
     strcpy(this->name, string.c_str());
 }
+
