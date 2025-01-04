@@ -10,6 +10,10 @@ class Model {
     public:
         std::vector<Array<D>*> parameters;
         virtual Array<D> forward(Array<D> x) = 0;
+
+        void load();
+        void save();
+
         void print();
         void print_grads();
 };

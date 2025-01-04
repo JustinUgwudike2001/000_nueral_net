@@ -1,7 +1,7 @@
-#include "model_template.h"
+#include "../model/test_model.h"
 
 template <typename D>
-class TestModel : public Model<D> {
+class FullyConnected : public Model<D> {
 
     private:
         // Define params
@@ -10,7 +10,7 @@ class TestModel : public Model<D> {
 
     public:
         // Save params
-        TestModel(int input_size, int output_size) : Model({&  , &bias}){
+        FullyConnected(int input_size, int output_size) : Model({&  , &bias}){
             // Initialise params
             this->weights = Array<D>({input_size,  output_size}).random();
             this->bias = Array<D>({output_size}).ones();
@@ -23,13 +23,13 @@ class TestModel : public Model<D> {
         }
 };
 
-int test_test_model(){
+int test_fc(){
 
     Array<float> inputs = Array<float>::from_array({5}, {1.,1.,1.,1.,1.});
     Array<float> labels = Array<float>::from_array({6}, {0.,0.,0.,1.,1.,1.,});
     labels.set_name("labels");
 
-     TestModel<float> model(5, 6);
+    FullyConnected<float> model(5, 6);
 
     MSELoss loss_fn = MSELoss();
     SGD<float> optimiser(model.parameters, 0.05);
