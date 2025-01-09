@@ -10,15 +10,18 @@ class TestModel : public Model<D> {
 
     public:
         // Save params
-        TestModel(int input_size, int output_size) : Model({&  , &bias}){
+        TestModel(int input_size, int output_size) {
             // Initialise params
             this->weights = Array<D>({input_size,  output_size}).random();
             this->bias = Array<D>({output_size}).ones();
+        
+            this->add_params({&weights, &bias});
         }
 
         Array<D> forward(Array<D> x) override {
             // Create the model
             this->out = x.dot(weights) + bias;
+            this->out = relu(this->out);
             return this->out;
         }
 };
@@ -29,15 +32,15 @@ int test_test_model(){
     Array<float> labels = Array<float>::from_array({6}, {0.,0.,0.,1.,1.,1.,});
     labels.set_name("labels");
 
-     TestModel<float> model(5, 6);
+    TestModel<float> model(5, 6);
 
     MSELoss loss_fn = MSELoss();
-    SGD<float> optimiser(model.parameters, 0.05);
+    SGD<float> optimiser(model.parameters, 0.5);
 
     Array<float> predictions;
     predictions.set_name("pds");
 
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 10; i++){
 
         printf("\niteration %d:=========================================\n", i);
 
@@ -50,8 +53,8 @@ int test_test_model(){
 
         loss.backward();
 
-        model.print();
-        model.print_grads();
+        //model.print();
+        //model.print_grads();
 
         optimiser.step();
     }

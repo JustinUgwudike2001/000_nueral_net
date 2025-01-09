@@ -9,11 +9,19 @@ class FullyConnected : public Model<D> {
         Array<D> bias;
 
     public:
-        // Save params
-        FullyConnected(int input_size, int output_size) : Model({&  , &bias}){
+
+        FullyConnected(){};
+        
+        FullyConnected(int input_size, int output_size) :
+        weights({input_size,  output_size}), 
+        bias({output_size})
+        {
             // Initialise params
-            this->weights = Array<D>({input_size,  output_size}).random();
-            this->bias = Array<D>({output_size}).ones();
+            this->weights.random();
+            this->bias.ones();
+
+            // Save params
+            this->add_params({&weights, &bias});
         }
 
         Array<D> forward(Array<D> x) override {
@@ -50,8 +58,8 @@ int test_fc(){
 
         loss.backward();
 
-        model.print();
-        model.print_grads();
+        //model.print();
+        //model.print_grads();
 
         optimiser.step();
     }

@@ -2,6 +2,10 @@
 #include <functional>
 #include "shape.h"
 
+struct counter{
+    int count = 0;
+} global_counter;
+
 template <typename D>
 struct Node {
     std::string op; // Operation name (e.g., "add", "multiply")
@@ -21,7 +25,10 @@ struct Node {
         if (visited) return; // Avoid re-computing gradients for the same node
         visited = true;
         
+        // std::cout<<"val: "<<global_counter.count<<std::endl;
+        // global_counter.count +=1;
         backward(); // Compute this node's gradient
+        //std::cout<<gradient<<std::endl;
 
         // Recursively compute gradients for input nodes
         for (const auto& input : inputs) {
