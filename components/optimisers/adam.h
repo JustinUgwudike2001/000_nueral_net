@@ -1,9 +1,9 @@
-#include "optimiser.h"
+#include "rms_prop.h"
 
 template <typename D>
 class Adam : public Optimiser<D> {
     public:
-        Adam(std::vector<Array<D>*> parameters, float lr, float beta_1 = 0.1, float beta_2 = 0.001);
+        Adam(std::vector<Array<D>*> parameters, float lr, float beta_1 = 0.9, float beta_2 = 0.999);
         void step();
     private:
         float beta_1;

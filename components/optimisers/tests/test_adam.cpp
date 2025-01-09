@@ -2,6 +2,5 @@
 
 int main()
 {
-    //stest_sgd();
     test_adam();
 }

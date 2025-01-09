@@ -22,8 +22,7 @@ class Model2 : public Model<D> {
             this->out = this->fc1.forward(x);
             this->out = relu(this->out);
             this->out = this->fc2.forward(this->out);
-            this->out = clipped_relu(this->out, float(10.0));
-
+            this->out = sigmoid(this->out);
             return this->out;
         }
 };
@@ -43,7 +42,7 @@ int test_model2(){
     Array<float> predictions;
     predictions.set_name("pds");
 
-    for(int i = 0; i < 200; i++){
+    for(int i = 0; i < 20; i++){
 
         printf("\niteration %d:=========================================\n", i);
 
