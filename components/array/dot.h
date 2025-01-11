@@ -51,7 +51,7 @@ Array<D> Array<D>::try_dot_arr1(Array<D> &rhs)
         dim1 = _rhs.shape.shape()[1];
         dim2 = _rhs.shape.shape()[2];
 
-        _rhs.reshape({_rhs.shape.shape()[0], dim1 * dim2});
+        _rhs = _rhs.reshape({_rhs.shape.shape()[0], dim1 * dim2});
 
         result = this->try_dot(*this, _rhs);
         result = result.reshape({this->get_shape().shape()[0], dim1, dim2});
@@ -67,7 +67,7 @@ Array<D> Array<D>::try_dot_arr1(Array<D> &rhs)
         for (int i = 0; i < rhs.shape.shape()[0]; i++)
         {
             _rhs = arrays[i];
-            _rhs.reshape({arrays[0].shape.shape()[2], dim1 * dim2});
+            _rhs = _rhs.reshape({arrays[0].shape.shape()[2], dim1 * dim2});
 
             result = this->try_dot(*this, _rhs);
             result = result.reshape({this->shape.shape()[1], dim1, dim2});
@@ -108,7 +108,7 @@ Array<D> Array<D>::try_dot_arr2(Array<D> &rhs)
         dim1 = _rhs.shape.shape()[1];
         dim2 = _rhs.shape.shape()[2];
 
-        _rhs.reshape({_rhs.shape.shape()[0], dim1 * dim2});
+        _rhs = _rhs.reshape({_rhs.shape.shape()[0], dim1 * dim2});
 
         result = this->try_dot(*this, _rhs);
         result = result.reshape({this->get_shape().shape()[0], dim1, dim2});
@@ -123,7 +123,7 @@ Array<D> Array<D>::try_dot_arr2(Array<D> &rhs)
         for (int i = 0; i < rhs.shape.shape()[3]; i++)
         {
             _rhs = arrays[i];
-            _rhs.reshape({arrays[0].shape.shape()[0], dim1 * dim2});
+            _rhs = _rhs.reshape({arrays[0].shape.shape()[0], dim1 * dim2});
 
             result = this->try_dot(*this, _rhs);
             result = result.reshape({this->shape.shape()[0], dim1, dim2});
@@ -154,7 +154,7 @@ Array<D> Array<D>::try_dot_arr3(Array<D> &rhs)
         dim1 = lhs.shape.shape()[0];
         dim2 = lhs.shape.shape()[1];
 
-        lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
+        lhs = lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
 
         result = this->try_dot(lhs, rhs);
         result = result.reshape({dim1, dim2, rhs.shape.shape()[1]});
@@ -165,7 +165,7 @@ Array<D> Array<D>::try_dot_arr3(Array<D> &rhs)
         dim1 = lhs.shape.shape()[0];
         dim2 = lhs.shape.shape()[1];
 
-        lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
+        lhs = lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
 
         result = this->try_dot(lhs, rhs);
         result = result.reshape({dim1, dim2, rhs.shape.shape()[1]});
@@ -180,8 +180,8 @@ Array<D> Array<D>::try_dot_arr3(Array<D> &rhs)
 
         for(int i = 0; i < lhs.shape.shape()[0]; i++){
 
-            lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
-            _rhs.reshape({rhs.shape.shape()[0], dim3 * dim4});
+            lhs = lhs.reshape({dim1 * dim2, lhs.shape.shape()[2]});
+            _rhs = _rhs.reshape({rhs.shape.shape()[0], dim3 * dim4});
 
             result_arrays.push_back(this->try_dot(lhs, _rhs));
         }
@@ -216,7 +216,7 @@ Array<D> Array<D>::try_dot_arr4(Array<D> &rhs)
         for (int i = 0; i < this->shape.shape()[0]; i++)
         {
             lhs = arrays[i];
-            lhs.reshape({dim1 * dim2, arrays[0].get_shape().shape()[2]});
+            lhs = lhs.reshape({dim1 * dim2, arrays[0].get_shape().shape()[2]});
 
             result = this->try_dot(lhs, rhs);
             result = result.reshape({dim1, dim2, rhs.get_shape().shape()[1]});
@@ -234,7 +234,7 @@ Array<D> Array<D>::try_dot_arr4(Array<D> &rhs)
         for (int i = 0; i < this->shape.shape()[0]; i++)
         {
             lhs = arrays[i];
-            lhs.reshape({dim1 * dim2, arrays[0].get_shape().shape()[2]});
+            lhs = lhs.reshape({dim1 * dim2, arrays[0].get_shape().shape()[2]});
 
             result = this->try_dot(lhs, rhs);
             result = result.reshape({dim1, dim2, rhs.get_shape().shape()[1]});

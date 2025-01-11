@@ -50,13 +50,13 @@ std::vector<Array<D>> Array<D>::split(int dim)
         switch (this->rank)
         {
         case 2:
-            elem_array.reshape({dims[0]});
+            elem_array = elem_array.reshape({dims[0]});
             break;
         case 3:
-            elem_array.reshape({dims[0], dims[1]});
+            elem_array = elem_array.reshape({dims[0], dims[1]});
             break;
         case 4:
-            elem_array.reshape({dims[0], dims[1], dims[2]});
+            elem_array = elem_array.reshape({dims[0], dims[1], dims[2]});
             break;
         default:
             std::cout << "NAHHHHHH!" << std::endl;
