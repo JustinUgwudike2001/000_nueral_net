@@ -40,6 +40,9 @@ public:
     D &operator()(std::vector<size_t> idxes);
     void operator()(D value, std::vector<size_t> idxes);
 
+    Array sub_arr(std::vector<size_t> idxes);
+    void operator()(Array sub_arr, std::vector<size_t> idxes);
+
     Array reshape(std::vector<int> dims);
     Array permute(std::vector<int> dims);
     Array t();

@@ -1,4 +1,4 @@
-#include "array_functions.h"
+#include "access_operators.h"
 
 template <typename D>
 Array<D> Array<D>::reshape(std::vector<int> dims)
@@ -12,31 +12,33 @@ Array<D> Array<D>::reshape(std::vector<int> dims)
         exit(0);
     }
 
-    this->shape = shape;
-    this->rank = shape.dims();
-    strcpy(this->name, "array");
+    Array<D> result = *this;
+    result.shape = shape;
+    result.rank =shape.dims();
 
-    return *this;
+    return result;
 }
 
 int test_reshape()
 {
+
+    Array<float> result;
 
     Array<float> array1({16});
     array1.random();
     array1.print();
     std::cout << std::endl;
 
-    array1.reshape({4, 4});
-    array1.print();
+    result = array1.reshape({4, 4});
+    result.print();
     std::cout << std::endl;
 
-    array1.reshape({2, 2, 4});
-    array1.print();
+    result = array1.reshape({2, 2, 4});
+    result.print();
     std::cout << std::endl;
 
-    array1.reshape({2, 2, 2, 2});
-    array1.print();
+    result = array1.reshape({2, 2, 2, 2});
+    result.print();
     std::cout << std::endl;
 
     Array<float> array2({2, 2, 3, 4});
@@ -44,16 +46,17 @@ int test_reshape()
     array2.print();
     std::cout << std::endl;
 
-    array2.reshape({2, 2, 12});
-    array2.print();
+    result = array2.reshape({2, 2, 12});
+    result.print();
     std::cout << std::endl;
 
-    array2.reshape({2, 24});
-    array2.print();
+    result = array2.reshape({2, 24});
+    result.print();
     std::cout << std::endl;
 
-    array2.reshape({48});
-    array2.print();
+    result = array2.reshape({48});
+    result.print();
+    result.print_grad();
 
     return 0;
 }

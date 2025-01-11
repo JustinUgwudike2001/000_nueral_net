@@ -10,7 +10,7 @@ std::vector<Array<D>> Array<D>::split(int dim)
     int elem_size = shape.size() / split_size;
 
     std::vector<Array> arrays;
-    std::vector<D> data(elem_size, 0.);
+    std::vector<D> _data(elem_size, 0.);
     std::vector<std::shared_ptr<Node<D>>> dots(elem_size);
 
     Array<D> ref = *this;
@@ -66,10 +66,11 @@ std::vector<Array<D>> Array<D>::split(int dim)
 
         for (int i = 0; i < elem_size; i++)
         {
-            data[i] = ref.data[strides[0] * j + i];
-            nodes[i] = ref.nodes[strides[0] * j + i];
+            _data[i] = ref.data[strides[0] * j + i];
+            dots[i] = ref.nodes[strides[0] * j + i];
         }
-        elem_array.fill_grad_vec(data, nodes, elem_size);
+
+        elem_array.fill_grad_vec(_data, dots, elem_size);
         arrays.push_back(elem_array);
     }
 

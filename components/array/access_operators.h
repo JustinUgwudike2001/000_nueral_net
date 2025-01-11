@@ -3,25 +3,40 @@
 template <typename D>
 inline D &Array<D>::operator()(std::vector<size_t> idxes)
 {
-
-    switch (idxes.size())
-    {
-    case 1:
-        return data[idxes[0]];
-        break;
-    case 2:
-        return data[(idxes[0] * this->shape.strides()[0]) + idxes[1]];
-        break;
-    case 3:
-        return data[(idxes[0] * this->shape.strides()[0]) + (idxes[1] * this->shape.strides()[1]) + idxes[2]];
-        break;
-    case 4:
-        return data[(idxes[0] * this->shape.strides()[0]) + (idxes[1] * this->shape.strides()[1]) + (idxes[2] * this->shape.strides()[2]) + idxes[3]];
-        break;
-    default:
-        std::cout << "Incorrect indexing array" << this->rank;
-        exit(0);
-        break;
+    if(idxes.size() == this->rank){
+        int index;
+        switch (idxes.size())
+        {
+        case 1:
+            index = int(idxes[0]);
+            if(index > this->shape.size()){
+                std::cout << "Incorrect indexing array";
+                exit(0);
+            }
+            return data[index];
+            break;
+        case 2:
+            index = int((idxes[0] * this->shape.strides()[0]) + idxes[1]);
+            if(index > this->shape.size()){
+                std::cout << "Incorrect indexing array";
+                exit(0);
+            }
+            return data[index];
+            break;
+        case 3:
+            return data[(idxes[0] * this->shape.strides()[0]) + (idxes[1] * this->shape.strides()[1]) + idxes[2]];
+            break;
+        case 4:
+            return data[(idxes[0] * this->shape.strides()[0]) + (idxes[1] * this->shape.strides()[1]) + (idxes[2] * this->shape.strides()[2]) + idxes[3]];
+            break;
+        default:
+            std::cout << "Incorrect indexing array" << this->rank;
+            exit(0);
+            break;
+        }
+    }
+    else{
+        throw std::runtime_error("Incorrect indexing array");
     }
 }
 
@@ -54,6 +69,16 @@ inline void Array<D>::operator()(D value, std::vector<size_t> idxes)
     }
 }
 
+template <typename D>
+Array<D> Array<D>::sub_arr(std::vector<size_t> idxes){
+
+}
+
+template <typename D>
+void Array<D>::operator()(Array<D> sub_arr, std::vector<size_t> idxes){
+
+}
+
 int test_access_operators()
 {
 
@@ -61,6 +86,9 @@ int test_access_operators()
     array1.lin();
     array1.print();
     std::cout << "array1[2]: " << array1({2}) << std::endl
+              << std::endl;
+
+    std::cout << "array1[20]: " << array1({20}) << std::endl
               << std::endl;
 
     Array<int> array2({2, 4});

@@ -43,7 +43,7 @@ inline void Array<D>::fill_grad_vec(std::vector<D> _data, std::vector<std::share
 {
     if (_data.size() != _nodes.size())
     {
-        std::cout << "Data and gradient vectors mus be the same size";
+        std::cout << "(fill_grad_vec): Data and gradient vectors must be the same size";
         exit(0);
     }
     if (size > this->shape.size())

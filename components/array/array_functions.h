@@ -1,4 +1,4 @@
-#include "access_operators.h"
+#include "mean.h"
 
 // Sin Functions
 template <typename D>
@@ -354,6 +354,38 @@ Array<D> arr = Array<D>(x.get_shape());
         // Define backward function
         newNode->backward = [node1 = nodes[i], leaky_val = leaky, newNode]() {
             D grad = (node1->value  > 0) ? 1 : leaky_val;
+            node1->gradient += sigmoid(node1->value) * (1.0 - sigmoid(node1->value)) * newNode->gradient;
+        };
+
+        resultNodes.push_back(newNode);
+    }
+
+    arr.fill_grad_vec(new_data, resultNodes, arr.get_shape().size());
+    return arr;
+}
+template <typename D>
+Array<D> softmax(Array<D> &x, int axis = 0){
+Array<D> arr = Array<D>(x.get_shape());
+    std::vector<std::shared_ptr<Node<D>>> resultNodes;
+    
+    std::vector<D> data = x.get_data();
+    std::vector<std::shared_ptr<Node<D>>> nodes = x.get_grad(); 
+    std::vector<D> new_data;
+    Array<D> exps = exp(x);
+
+    for (int i = 0; i < arr.get_shape().size(); i++)
+    {
+
+        float sum = exps.sum();
+        float s_max = exp(data[i]) / sum;
+        new_data.push_back(sigmoid(data[i]));
+
+        // Create a node for the operation
+        std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(new_data[i]);
+        newNode->addInput(nodes[i]);
+
+        // Define backward function
+        newNode->backward = [node1 = nodes[i], s_sum = sum, newNode,]() {
             node1->gradient += sigmoid(node1->value) * (1.0 - sigmoid(node1->value)) * newNode->gradient;
         };
 

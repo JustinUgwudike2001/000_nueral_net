@@ -1,4 +1,4 @@
-#include "../array/mean.h"
+#include "../array/array_functions.h"
 
 class LossFunction {
 
