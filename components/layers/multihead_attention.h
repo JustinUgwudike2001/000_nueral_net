@@ -45,8 +45,9 @@ class MultiHeadAttention : public Model<D> {
             Array<D> scaled = q.dot(k.permute({0, 1, 3, 2})) / std::sqrt(d_k);
 
             scaled = scaled + mask;
-            Array<D> scores = sigmoid(scaled);
-
+            Array<D> scores = softmax(scaled);
+            
+            // 30 x 8 x 10 x 3 v
             Array<D> values = score.dot(v);
         }
 
@@ -57,7 +58,7 @@ class MultiHeadAttention : public Model<D> {
         }
 };
 
-int test_fc(){
+int test_multihead_attention(){
 
     Array<float> inputs = Array<float>::from_array({5}, {1.,1.,1.,1.,1.});
     Array<float> labels = Array<float>::from_array({6}, {0.,0.,0.,1.,1.,1.,});
