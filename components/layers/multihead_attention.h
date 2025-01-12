@@ -1,4 +1,5 @@
 #include "model2.h"
+#include <limits>
 
 template <typename D>
 class MultiHeadAttention : public Model<D> {
@@ -15,6 +16,10 @@ class MultiHeadAttention : public Model<D> {
         FullyConnected<D> fc_k;
         FullyConnected<D> fc_v;
         FullyConnected<D> fc_out;
+
+        Array<D> q;
+        Array<D> k;
+        Array<D> v;
 
     public:
 
@@ -38,6 +43,14 @@ class MultiHeadAttention : public Model<D> {
             this->add_params(this->fc_out.parameters);
         }
 
+        Array<D> create_mask(int dim){
+            Array<D> mask({dim, dim});
+            mask.zeros();
+            mask = mask - std::numeric_limits<D>::infinity();
+            mask = mask.triu(1);
+            return mask;
+        }
+
         Array<D> scaled_dot_product(Array<D> q, Array<D> k, Array<D> v, Array<D> mask){
             float d_k = float(this->head_dim);
 
@@ -53,27 +66,20 @@ class MultiHeadAttention : public Model<D> {
             return values;
         }
 
-        Array<D> forward(Array<D> x) override {
+        Array<D> forward(Array<D>& x) override {
             // Create the model
 
             int batch_size = x.get_shape().shape()[0];
             int sequence_length = x.get_shape().shape()[1];
             int _d_model = x.get_shape().shape()[2];
 
-            printf("hey");
-
             // 30 x 8 x 10 x 10
-            Array<D> mask({batch_size, this->num_heads, sequence_length, sequence_length});
-            mask.ones();
-
-                        printf("hey1");
+            Array<D> mask = this->create_mask(sequence_length);
 
             // 30 x 10 x 24
             Array<D> q = this->fc_q.forward(x);
             Array<D> k = this->fc_k.forward(x);
             Array<D> v = this->fc_v.forward(x);
-
-                        printf("hey2");
 
             // 30 x 10 x 8 x 3
             q = q.reshape({batch_size, sequence_length, this->num_heads, this->head_dim});
@@ -101,21 +107,21 @@ class MultiHeadAttention : public Model<D> {
 
 int test_multihead_attention(){
 
-    Array<float> inputs({30, 10, 24});
-    inputs.random();
-    Array<float> labels({30, 10, 24});
-    labels.ones();
+    Array<float> inputs({1, 5, 16});
+    inputs.ones();
+    Array<float> labels({1, 5, 16});
+    labels.random();
     labels.set_name("labels");
 
-    MultiHeadAttention<float> model(24, 8);
+    MultiHeadAttention<float> model(16, 8);
 
     MSELoss loss_fn = MSELoss();
-    Adam<float> optimiser(model.parameters, 0.05);
+    Adam<float> optimiser(model.parameters, 0.01);
 
     Array<float> predictions;
     predictions.set_name("pds");
 
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 500; i++){
 
         printf("\niteration %d:=========================================\n", i);
 

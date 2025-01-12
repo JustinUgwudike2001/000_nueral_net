@@ -56,8 +56,10 @@ public:
     Array expand(std::vector<int> dims);
     Array broadcast_to(std::vector<int> dims);
 
-    Array sum();
+    
+    Array triu(int _offset = 0);
 
+    Array sum();
     Array mean();
 
     void set_name(std::string string);

@@ -17,7 +17,7 @@ class Model2 : public Model<D> {
             this->add_params(this->fc2.parameters);
         }
 
-        Array<D> forward(Array<D> x) override {
+        Array<D> forward(Array<D>& x) override {
             // Create the model
             this->out = this->fc1.forward(x);
             this->out = relu(this->out);

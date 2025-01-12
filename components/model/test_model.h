@@ -18,7 +18,7 @@ class TestModel : public Model<D> {
             this->add_params({&weights, &bias});
         }
 
-        Array<D> forward(Array<D> x) override {
+        Array<D> forward(Array<D>& x) override {
             // Create the model
             this->out = x.dot(weights) + bias;
             this->out = relu(this->out);
