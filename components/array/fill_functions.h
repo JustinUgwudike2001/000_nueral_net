@@ -25,7 +25,7 @@ Array<D> Array<D>::triu(int _offest = 0)
                     offset += 1;
                     for(int k = 0; k < this->shape.shape()[2]; k++){
                         triu_arr.data[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k] = (k < offset ? 0 : data[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k]);
-                        triu_arr.data[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k] = (k < offset ?  std::make_shared<Node<D>>(0) : nodes[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k]);
+                        triu_arr.nodes[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k] = (k < offset ?  std::make_shared<Node<D>>(0) : nodes[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k]);
                     }
                 }
             }
@@ -38,7 +38,7 @@ Array<D> Array<D>::triu(int _offest = 0)
                         offset += 1;
                         for(int l = 0; l < this->shape.shape()[3]; l++){
                             triu_arr.data[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k + this->shape.strides()[3] * l] = (l < offset ? 0 : data[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k+ this->shape.strides()[3] * l]);
-                            triu_arr.data[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k + this->shape.strides()[3] * l] = (l < offset ?  std::make_shared<Node<D>>(0) : nodes[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k+ this->shape.strides()[3] * l]);
+                            triu_arr.nodes[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k + this->shape.strides()[3] * l] = (l < offset ?  std::make_shared<Node<D>>(0) : nodes[this->shape.strides()[0] * i + this->shape.strides()[1] * j + this->shape.strides()[2] * k+ this->shape.strides()[3] * l]);
                         }
                     }
                 }
