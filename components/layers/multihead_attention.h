@@ -38,36 +38,79 @@ class MultiHeadAttention : public Model<D> {
             this->add_params(this->fc_out.parameters);
         }
 
-        Array<D> scaled_dot_product(Array q, Array k, Array v, Array mask){
+        Array<D> scaled_dot_product(Array<D> q, Array<D> k, Array<D> v, Array<D> mask){
             float d_k = float(this->head_dim);
 
             // 30 x 8 x 10 x 10
             Array<D> scaled = q.dot(k.permute({0, 1, 3, 2})) / std::sqrt(d_k);
 
             scaled = scaled + mask;
-            Array<D> scores = softmax(scaled);
+            Array<D> scores = sigmoid(scaled);
             
             // 30 x 8 x 10 x 3 v
-            Array<D> values = score.dot(v);
+            Array<D> values = scores.dot(v);
+
+            return values;
         }
 
         Array<D> forward(Array<D> x) override {
             // Create the model
-            this->out = x.dot(weights) + bias;
+
+            int batch_size = x.get_shape().shape()[0];
+            int sequence_length = x.get_shape().shape()[1];
+            int _d_model = x.get_shape().shape()[2];
+
+            printf("hey");
+
+            // 30 x 8 x 10 x 10
+            Array<D> mask({batch_size, this->num_heads, sequence_length, sequence_length});
+            mask.ones();
+
+                        printf("hey1");
+
+            // 30 x 10 x 24
+            Array<D> q = this->fc_q.forward(x);
+            Array<D> k = this->fc_k.forward(x);
+            Array<D> v = this->fc_v.forward(x);
+
+                        printf("hey2");
+
+            // 30 x 10 x 8 x 3
+            q = q.reshape({batch_size, sequence_length, this->num_heads, this->head_dim});
+            k = k.reshape({batch_size, sequence_length, this->num_heads, this->head_dim});
+            v = v.reshape({batch_size, sequence_length, this->num_heads, this->head_dim});
+
+            // 30 x 8 x 10 x 3
+            q = q.permute({0, 2, 1, 3});
+            k = k.permute({0, 2, 1, 3});
+            v = v.permute({0, 2, 1, 3});
+
+            // 30 x 8 x 10 x 3 
+            this->out = this->scaled_dot_product(q, k, v, mask);
+
+            // 30 x 10 x 8 x 3 
+            this->out = this->out.permute({0, 2, 1, 3});
+
+            // 30 x 10 x 24
+            this->out = this->out.reshape({batch_size, sequence_length, _d_model});
+            this->out = this->fc_out.forward(this->out);
+
             return this->out;
         }
 };
 
 int test_multihead_attention(){
 
-    Array<float> inputs = Array<float>::from_array({5}, {1.,1.,1.,1.,1.});
-    Array<float> labels = Array<float>::from_array({6}, {0.,0.,0.,1.,1.,1.,});
+    Array<float> inputs({30, 10, 24});
+    inputs.random();
+    Array<float> labels({30, 10, 24});
+    labels.ones();
     labels.set_name("labels");
 
-    FullyConnected<float> model(5, 6);
+    MultiHeadAttention<float> model(24, 8);
 
     MSELoss loss_fn = MSELoss();
-    SGD<float> optimiser(model.parameters, 0.05);
+    Adam<float> optimiser(model.parameters, 0.05);
 
     Array<float> predictions;
     predictions.set_name("pds");

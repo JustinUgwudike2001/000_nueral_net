@@ -168,7 +168,7 @@ template <typename D>
 Array<D> Array<D>::operator+(Array &rhs)
 {
 
-    if (this->shape.size() != rhs.shape.size())
+    if (this->shape.size() % rhs.shape.size() != 0)
     {
         std::cout << "These arrays are not equal size";
         exit(0);
@@ -179,15 +179,15 @@ Array<D> Array<D>::operator+(Array &rhs)
 
     for (int i = 0; i < this->shape.size(); i++)
     {
-        arr.data[i] = this->data[i] + rhs.data[i];
+        arr.data[i] = this->data[i] + rhs.data[i % rhs.shape.size()];
 
         // Create a node for the operation
         std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
         newNode->addInput(nodes[i]);
-        newNode->addInput(rhs.nodes[i]);
+        newNode->addInput(rhs.nodes[i % rhs.shape.size()]);
 
         // Define backward function
-        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i % rhs.shape.size()], newNode]() {
             node1->gradient += 1.0 * newNode->gradient;
             node2->gradient += 1.0 * newNode->gradient;
         };
@@ -202,7 +202,7 @@ template <typename D>
 Array<D> Array<D>::operator-(Array &rhs)
 {
 
-    if (this->shape.size() != rhs.shape.size())
+    if (this->shape.size() % rhs.shape.size() != 0)
     {
         std::cout << "These arrays are not equal size";
         exit(0);
@@ -213,15 +213,15 @@ Array<D> Array<D>::operator-(Array &rhs)
 
     for (int i = 0; i < this->shape.size(); i++)
     {
-        arr.data[i] = this->data[i] - rhs.data[i];
+        arr.data[i] = this->data[i] - rhs.data[i % rhs.shape.size()];
 
         // Create a node for the operation
         std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
         newNode->addInput(nodes[i]);
-        newNode->addInput(rhs.nodes[i]);
+        newNode->addInput(rhs.nodes[i % rhs.shape.size()]);
 
         // Define backward function
-        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i % rhs.shape.size()], newNode]() {
             node1->gradient += 1.0 * newNode->gradient;
             node2->gradient -= 1.0 * newNode->gradient;
         };
@@ -236,7 +236,7 @@ template <typename D>
 Array<D> Array<D>::operator/(Array &rhs)
 {
 
-    if (this->shape.size() != rhs.shape.size())
+    if (this->shape.size() % rhs.shape.size() != 0)
     {
         std::cout << "These arrays are not equal size";
         exit(0);
@@ -247,15 +247,15 @@ Array<D> Array<D>::operator/(Array &rhs)
 
     for (int i = 0; i < this->shape.size(); i++)
     {
-        arr.data[i] = this->data[i] / rhs.data[i];
+        arr.data[i] = this->data[i] / rhs.data[i % rhs.shape.size()];
 
         // Create a node for the operation
         std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
         newNode->addInput(nodes[i]);
-        newNode->addInput(rhs.nodes[i]);
+        newNode->addInput(rhs.nodes[i % rhs.shape.size()]);
 
         // Define backward function
-        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i % rhs.shape.size()], newNode]() {
             node1->gradient += (1.0 / node2->value) * newNode->gradient;  
             node2->gradient -= (node1->value / (node2->value * node2->value)) * newNode->gradient;
         };
@@ -270,7 +270,7 @@ template <typename D>
 Array<D> Array<D>::operator*(Array &rhs)
 {
 
-    if (this->shape.size() != rhs.shape.size())
+    if (this->shape.size() % rhs.shape.size() != 0)
     {
         std::cout << "These arrays are not equal size";
         exit(0);
@@ -281,15 +281,15 @@ Array<D> Array<D>::operator*(Array &rhs)
 
     for (int i = 0; i < this->shape.size(); i++)
     {
-        arr.data[i] = this->data[i] * rhs.data[i];
+        arr.data[i] = this->data[i] * rhs.data[i % rhs.shape.size()];
 
         // Create a node for the operation
         std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
         newNode->addInput(nodes[i]);
-        newNode->addInput(rhs.nodes[i]);
+        newNode->addInput(rhs.nodes[i % rhs.shape.size()]);
 
         // Define backward function
-        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i % rhs.shape.size()], newNode]() {
             node1->gradient += node2->value * newNode->gradient;
             node2->gradient += node1->value * newNode->gradient;
         };
@@ -303,20 +303,27 @@ Array<D> Array<D>::operator*(Array &rhs)
 template <typename D>
 Array<D> Array<D>::operator^(Array<D> &rhs)
 {
+
+    if (this->shape.size() % rhs.shape.size() != 0)
+    {
+        std::cout << "These arrays are not equal size";
+        exit(0);
+    }
+
     Array<D> arr = Array<D>(this->shape);
     std::vector<std::shared_ptr<Node<D>>> resultNodes;
 
     for (int i = 0; i < this->shape.size(); i++)
     {
-        arr.data[i] = std::pow(this->data[i], rhs.data[i]);
+        arr.data[i] = std::pow(this->data[i], rhs.data[i % rhs.shape.size()]);
         
         // Create a node for the operation
         std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(arr.data[i]);
         newNode->addInput(nodes[i]);
-        newNode->addInput(rhs.nodes[i]);
+        newNode->addInput(rhs.nodes[i % rhs.shape.size()]);
 
         // Define backward function
-        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i], newNode]() {
+        newNode->backward = [node1 = nodes[i], node2 = rhs.nodes[i % rhs.shape.size()], newNode]() {
             node1->gradient += (node2->value * std::pow(node1->value, node2->value - 1)) * newNode->gradient; // ∂(a^b)/∂a
             node2->gradient += (std::log(node1->value) * newNode->value) * newNode->gradient; // ∂(a^b)/∂b
         };
@@ -390,6 +397,15 @@ int test_basic_operators()
     std::cout << "array4 - array1: " << std::endl;
     array4 = array4 - array1;
     array4.print();
+
+    Array<float> array1_test({4});
+    array1_test.ones();
+    array1_test = array1_test + 5;
+    array1_test.print();
+
+    std::cout << "array2 + array1_test: " << std::endl;
+    array2 = array2 + array1_test;
+    array2.print();
 
     // Array<int> ints({10});
     // ints.lin();
