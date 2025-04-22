@@ -372,21 +372,31 @@ Array<D> arr = Array<D>(x.get_shape());
     std::vector<std::shared_ptr<Node<D>>> nodes = x.get_grad(); 
     std::vector<D> new_data;
     Array<D> exps = exp(x);
+    Array<D> sum = exps.sum();
 
     for (int i = 0; i < arr.get_shape().size(); i++)
     {
 
-        float sum = exps.sum();
-        float s_max = exp(data[i]) / sum;
-        new_data.push_back(sigmoid(data[i]));
+        D s_max = exp(data[i]) / sum({0});
+        new_data.push_back(s_max);
 
         // Create a node for the operation
         std::shared_ptr<Node<D>> newNode = std::make_shared<Node<D>>(new_data[i]);
-        newNode->addInput(nodes[i]);
+        for (int k = 0; k < nodes.size(); k++) {
+            newNode->addInput(nodes[k]);
+        }
 
         // Define backward function
-        newNode->backward = [node1 = nodes[i], s_sum = sum, newNode,]() {
-            node1->gradient += sigmoid(node1->value) * (1.0 - sigmoid(node1->value)) * newNode->gradient;
+        newNode->backward = [i, &nodes, &new_data, newNode]() {
+            for (int k = 0; k < (int)nodes.size(); k++) {
+                if (k == i) {
+                    // d/dx_i of y_i => y_i(1 - y_i)
+                    nodes[k]->gradient += newNode->gradient * new_data[i] * (1.0 - new_data[i]);
+                } else {
+                    // d/dx_k of y_i => -y_i * y_k
+                    nodes[k]->gradient += newNode->gradient * (- new_data[i] * new_data[k]);
+                }
+            }
         };
 
         resultNodes.push_back(newNode);

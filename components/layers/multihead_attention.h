@@ -75,6 +75,7 @@ class MultiHeadAttention : public Model<D> {
 
             // 30 x 8 x 10 x 10
             Array<D> mask = this->create_mask(sequence_length);
+            //mask.print();
 
             // 30 x 10 x 24
             Array<D> q = this->fc_q.forward(x);
@@ -116,18 +117,18 @@ int test_multihead_attention(){
     MultiHeadAttention<float> model(16, 8);
 
     MSELoss loss_fn = MSELoss();
-    Adam<float> optimiser(model.parameters, 0.01);
+    Adam<float> optimiser(model.parameters, 0.001);
 
     Array<float> predictions;
     predictions.set_name("pds");
 
-    for(int i = 0; i < 500; i++){
+    for(int i = 0; i < 1000; i++){
 
-        printf("\niteration %d:=========================================\n", i);
+        //printf("\niteration %d:=========================================\n", i);
 
         predictions = model.forward(inputs);
-        predictions.print();
-        labels.print();
+        //predictions.print();
+        //labels.print();
 
         Array<float> loss = loss_fn.forward(predictions, labels);
         loss_fn.print();
@@ -139,6 +140,9 @@ int test_multihead_attention(){
 
         optimiser.step();
     }
+
+    predictions.print();
+    labels.print();
 
     return 0;
 }
